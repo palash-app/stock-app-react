@@ -1,3 +1,22 @@
+# TODO
+![alt text](image.png)
+0. How to send userconfig () - todo suvra 
+1. Login not working use oauth. - todo palash
+2. Result of query not made. - to do suvra
+3. Then statement not made - waiting for palash
+4. The drop-down are not selected when you use up-down button - todo suvra
+5. All query have the same name - change to new query. - todo palash send from server side
+6. What is the red button for? - ignore
+7. TCS chart still as chart title. Was any cleaning done? - ignore
+8. Remove AddChart button from header - todo suvro
+
+## TODO PALASH
+* Then statement needs regex statement it now has ^ something.
+
+### Future
+1. Chart doesn't have ability to change interval.
+2. Pan doesn't work. Remove this use tradingview chart.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
@@ -68,3 +87,4 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
