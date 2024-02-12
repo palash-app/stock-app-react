@@ -16,11 +16,11 @@ function Dashboard() {
         query: "webserver --ticker all --do get --indicator tickers",
       };
       const response = await axios.post(
-        "https://communal-vocal-mayfly.ngrok-free.app/ohlc",
+        "http://localhost:8087/ohlc",
         obj
       );
-      const arr = response.data.tickers.slice(0, 20);
-      console.log(arr);
+      const arr = response.data.tickers;
+      // console.log(arr);
       setTickers(arr);
     } catch (err) {
       console.log(err);

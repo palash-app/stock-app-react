@@ -102,7 +102,7 @@ const TreeView = ({ setQuery }) => {
         query: "statementlist --do get",
       };
       const response = await axios.post(
-        "https://communal-vocal-mayfly.ngrok-free.app",
+        "http://localhost:8087",
         obj
       );
       if (response.status == 200) {
