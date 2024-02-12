@@ -1,0 +1,45 @@
+/* TreeView.css */
+
+.tree-view {
+  font-family: "Arial", sans-serif;
+}
+
+.tree-node {
+  margin-bottom: 8px;
+}
+
+.node-content {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.toggle {
+  margin-right: 5px;
+}
+
+.children {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.children > input {
+  width: 50px;
+  height: 20px;
+}
+
+.children > select {
+  height: 20px;
+}
+.active {
+  color: blue;
+  font-weight: bold;
+}
+
+.form-control:focus,
+.form-control:active {
+  outline: none !important;
+  border: none !important;
+}
