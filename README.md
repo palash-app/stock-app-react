@@ -10,6 +10,7 @@
 7. TCS chart still as chart title. Was any cleaning done? - ignore
 8. Remove AddChart button from header - todo suvro
 9. Then statement needs regex statement it now has ^ something - done.
+10. Test git pull request with public repo
 
 ### Future
 1. Chart doesn't have ability to change interval.
