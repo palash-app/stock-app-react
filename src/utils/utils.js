@@ -15,6 +15,7 @@ export const convertData = stockData => {
   return formattedData.data;
 };
 
+// Is this hard-coded instead of calling api?
 export const querydata = [
   {
     regex: "^(\\w+) stocks$",
