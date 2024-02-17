@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
 import "react-bootstrap-typeahead/css/Typeahead.css";
 import axios from "axios";
-import AutocompleteInput from "../../Components/AutoComplete/AutoComplete";
+import AutocompleteInput from "../AutoComplete/AutoComplete";
 import SelectedQuery from "./SelectedQuery";
 
 const TreeNode = ({ title, queries, handleQueryChange }) => {

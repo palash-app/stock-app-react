@@ -2,29 +2,47 @@ import React, { useRef, useState } from "react";
 import {
   faAngleDown,
   faMinus,
+  faPenToSquare,
   faPlay,
+  faRotateRight,
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { Card } from "react-bootstrap";
-import TreeView from "../../Pages/TreeNode/TreeView";
+import TreeView from "./TreeNode/TreeView";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./query.css";
 import { checkQuery } from "../../utils/services";
 
 const QueryTool = ({ removeSubModule, subModule }) => {
   const [expanded, setExpanded] = useState(true);
+  const [resultExpand, setResultExpand] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [result, setResult] = useState([]);
   const [query, setQuery] = useState({ given: [], when: [], then: [] });
   const title = useRef();
 
-  const submitQuery = () => {
+  const submitQuery = async () => {
     let match = checkQuery(query);
     let feature = title.current.innerText;
+    setResult([]);
     if (!match) {
-      console.log("please Check all the query");
+      alert("please Check all the query");
     } else {
       let obj = { feature: feature, scenario: feature, ...query };
+      setLoading(true);
+
+      // ↓↓↓↓↓↓ submit api with this string below(str) ↓↓↓↓↓↓↓
       let str = conCatQuery(obj);
-      console.log(str);
+      // ↑↑↑↑↑↑ submit api with this string below(str) ↑↑↑↑↑↑↑
+
+      //  Testing Loader ---------------->>>>
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      //  set Demo result list ------->>>
+      setResult(["ABCD", "EFGH", "IJKL"]);
+
+      //  Loading off ----->>>
+      setLoading(false);
     }
   };
 
@@ -38,24 +56,38 @@ const QueryTool = ({ removeSubModule, subModule }) => {
 
   return (
     <>
-      <Card className={`m-1 ${expanded ? "" : "expanded"}`} key={subModule.id}>
-        <Card.Body className="p-1">
+      <Card id="query-card" key={subModule.id}>
+        <Card.Body className={`m-1 p-1 ${expanded ? "" : "expanded"}`}>
           <div
             className="d-flex justify-content-between mx-2 align-items-center"
             style={{ height: "35px" }}
           >
-            <span
-              className="fw-bold"
-              contentEditable
-              ref={title}
-              style={{ fontSize: "0.8rem" }}
-            >
-              Relative strength
-            </span>
             <div>
-              <button className="btn btn-sm border-none" onClick={submitQuery}>
-                <FontAwesomeIcon icon={faPlay} />
-              </button>
+              <span>
+                <FontAwesomeIcon icon={faPenToSquare} />
+              </span>
+              <span
+                className="fw-bold p-1"
+                contentEditable
+                ref={title}
+                style={{ fontSize: "0.8rem" }}
+              >
+                Relative strength
+              </span>
+            </div>
+            <div>
+              {loading ? (
+                <button className="btn btn-sm border-none">
+                  <FontAwesomeIcon className="spinner" icon={faRotateRight} />
+                </button>
+              ) : (
+                <button
+                  className="btn btn-sm border-none"
+                  onClick={submitQuery}
+                >
+                  <FontAwesomeIcon icon={faPlay} color="#40A2E3" />
+                </button>
+              )}
               <button
                 className="btn p-1 text-dark border-none"
                 onClick={() => {
@@ -63,9 +95,9 @@ const QueryTool = ({ removeSubModule, subModule }) => {
                 }}
               >
                 {expanded ? (
-                  <FontAwesomeIcon icon={faMinus} />
+                  <FontAwesomeIcon icon={faMinus} color="#0D9276" />
                 ) : (
-                  <FontAwesomeIcon icon={faAngleDown} />
+                  <FontAwesomeIcon icon={faAngleDown} color="#0D9276" />
                 )}
               </button>
               <button
@@ -82,6 +114,39 @@ const QueryTool = ({ removeSubModule, subModule }) => {
           <TreeView setQuery={setQuery} />
           <div className="d-flex justify-content-end m-2"></div>
         </Card.Body>
+        {result.length > 0 && (
+          <Card.Footer className={`m-1 p-1 ${resultExpand ? "" : "expanded"}`}>
+            <div
+              className="d-flex justify-content-between mx-2 align-items-center"
+              style={{ height: "35px" }}
+            >
+              <div>
+                <span className="fw-bold p-1" style={{ fontSize: "0.8rem" }}>
+                  Result
+                </span>
+              </div>
+              <div>
+                <button
+                  className="btn p-1 text-dark border-none"
+                  onClick={() => {
+                    setResultExpand(!resultExpand);
+                  }}
+                >
+                  {resultExpand ? (
+                    <FontAwesomeIcon icon={faMinus} />
+                  ) : (
+                    <FontAwesomeIcon icon={faAngleDown} />
+                  )}
+                </button>
+              </div>
+            </div>
+            <ul>
+              {result.map(item => (
+                <li>{item}</li>
+              ))}
+            </ul>
+          </Card.Footer>
+        )}
       </Card>
     </>
   );

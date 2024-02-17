@@ -68,10 +68,12 @@ export function checkQuery(query) {
 export function checkArrayRegex(array) {
   // Check if the array exists and is an array
   if (!Array.isArray(array)) {
+    // console.log("Not Array");
     return false;
   }
 
   if (array.length == 0) {
+    // console.log("array length = 0");
     return false;
   }
   // Iterate over array elements
@@ -81,6 +83,7 @@ export function checkArrayRegex(array) {
       const regex = new RegExp(obj.regex);
       // Check if the 'str' property matches the regex
       if (!regex.test(obj.str)) {
+        // console.log("!regex matched");
         return false;
       }
     } else {

@@ -5,6 +5,7 @@ import {
   faChevronLeft,
   faChevronRight,
   faFile,
+  faFloppyDisk,
   faPlus,
   faPowerOff,
   faXmark,
@@ -13,7 +14,6 @@ import "./Header.css";
 import { useNavigate } from "react-router-dom";
 
 function Header({ addChart }) {
-  const stocks = ["NSEBANK", "EXIDEIND", "ACE"];
   const navigate = useNavigate();
   const logout = () => {
     localStorage.clear();
@@ -22,14 +22,14 @@ function Header({ addChart }) {
 
   return (
     <div className="header shadow">
+      <div></div>
       <div>
-        <button className="btn btn-primary" onClick={addChart}>
-          Add chart
-        </button>
-      </div>
-      <div>
-        <button className="subButton" id="logout" onClick={logout}>
-          <FontAwesomeIcon icon={faPowerOff} />
+        <button
+          className="btn btn-primary"
+          id="logout"
+          style={{ borderRadius: "23px" }}
+        >
+          <FontAwesomeIcon icon={faFloppyDisk} /> Save
         </button>
       </div>
     </div>

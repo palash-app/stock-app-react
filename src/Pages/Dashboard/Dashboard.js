@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import "./Dashboard.css";
 import Sidenav from "../../Components/Sidenav/Sidenav";
 import Header from "../../Components/Header/Header";
-import Chartview from "../../Components/Chartview/Chartview";
 import axios from "axios";
 import TradeChart from "../../Components/ChartNew/TradeChart";
 
@@ -40,10 +39,10 @@ function Dashboard() {
   }, []);
 
   return (
-    <>
+    <div>
       <Header addChart={addChart} />
       <Sidenav />
-      <div className="main" style={{ marginTop: "70px" }}>
+      <div className="main" style={{ marginTop: "70px", marginLeft: "20px" }}>
         <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
           {charts.map(chart => (
             <div
@@ -68,7 +67,7 @@ function Dashboard() {
           ))}
         </div>
       </div>
-    </>
+    </div>
   );
 }
 
