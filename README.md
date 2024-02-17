@@ -1,18 +1,20 @@
 # TODO
-![alt text](image.png)
-0. How to send userconfig () - todo suvra
+
+![alt text](image.png) 0. How to send userconfig () - todo suvra
+
 1. Login not working use oauth. - todo palash
-2. Result of query not made. - to do suvra
+2. Result of query not made. - to do suvro - Done
 3. Then statement not made - waiting for palash - start now
-4. The drop-down are not selected when you use up-down button - todo suvra
+4. The drop-down are not selected when you use up-down button - todo suvro - Done
 5. All query have the same name - change to new query. - todo palash send from server side
 6. What is the red button for? - ignore
 7. TCS chart still as chart title. Was any cleaning done? - ignore
-8. Remove AddChart button from header - todo suvro
+8. Remove AddChart button from header - todo suvro - Done
 9. Then statement needs regex statement it now has ^ something - done.
 10. Test git pull request
 
 ### Future
+
 1. Chart doesn't have ability to change interval.
 2. Pan doesn't work. Remove this use tradingview chart.
 
