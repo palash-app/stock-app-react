@@ -1,6 +1,6 @@
 # TODO
 ![alt text](image.png)
-0. How to send userconfig () - todo suvra 
+0. How to send userconfig () - todo suvra
 1. Login not working use oauth. - todo palash
 2. Result of query not made. - to do suvra
 3. Then statement not made - waiting for palash - start now

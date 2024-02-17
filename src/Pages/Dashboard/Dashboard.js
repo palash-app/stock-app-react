@@ -16,11 +16,10 @@ function Dashboard() {
         query: "webserver --ticker all --do get --indicator tickers",
       };
       const response = await axios.post(
-        "http://localhost:8087/ohlc",
+        "https://united-iguana-superb.ngrok-free.app/ohlc",
         obj
       );
       const arr = response.data.tickers;
-      // console.log(arr);
       setTickers(arr);
     } catch (err) {
       console.log(err);

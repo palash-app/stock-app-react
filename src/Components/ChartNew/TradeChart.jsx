@@ -55,7 +55,7 @@ const TradeChart = props => {
           query: `webserver --ticker ${stock} --interval day --do get --indicator ohlc --n 1000`,
         };
         const response = await axios.post(
-          "http://localhost:8087/ohlc",
+          "https://united-iguana-superb.ngrok-free.app/ohlc",
           data
         );
 
@@ -154,6 +154,7 @@ const TradeChart = props => {
             options={options}
             series={series}
             type="candlestick"
+            height="650px"
             height="650px"
             title="TCS Chart"
           />
