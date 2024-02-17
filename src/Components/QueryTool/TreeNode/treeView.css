@@ -28,18 +28,40 @@
 .children > input {
   width: 50px;
   height: 20px;
+  color: #0c836a;
+  background-color: #fff6e9;
+  border: none;
+  border: 1px solid #0c836a;
+}
+input:focus {
+  outline: none;
 }
 
 .children > select {
   height: 20px;
+  background-color: #fff6e9;
+  color: #0c836a;
+  border: none;
+  border: 1px solid #0c836a;
 }
+
+.children > select:focus {
+  outline: none;
+}
+/* .children > select:active  */
+
 .active {
   color: blue;
   font-weight: bold;
 }
 
+.form-control,
+.form-control::placeholder {
+  color: #0c836a !important;
+}
 .form-control:focus,
 .form-control:active {
   outline: none !important;
-  border: none !important;
+  border: 1px solid #0c836a !important;
+  box-shadow: none !important;
 }

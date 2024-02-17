@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
 import "react-bootstrap-typeahead/css/Typeahead.css";
 import axios from "axios";
-import AutocompleteInput from "../../Components/AutoComplete/AutoComplete";
+import AutocompleteInput from "../AutoComplete/AutoComplete";
 import SelectedQuery from "./SelectedQuery";
 
 const TreeNode = ({ title, queries, handleQueryChange }) => {
@@ -102,7 +102,7 @@ const TreeView = ({ setQuery }) => {
         query: "statementlist --do get",
       };
       const response = await axios.post(
-        "http://localhost:8087",
+        "https://communal-vocal-mayfly.ngrok-free.app",
         obj
       );
       if (response.status == 200) {
