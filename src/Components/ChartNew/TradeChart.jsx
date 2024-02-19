@@ -55,7 +55,7 @@ const TradeChart = props => {
           query: `webserver --ticker ${stock} --interval day --do get --indicator ohlc --n 1000`,
         };
         const response = await axios.post(
-          "https://united-iguana-superb.ngrok-free.app/ohlc",
+          "https://gorgeous-turtle-loudly.ngrok-free.app/ohlc",
           data
         );
 

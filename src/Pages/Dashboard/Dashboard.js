@@ -16,7 +16,7 @@ function Dashboard() {
         query: "webserver --ticker all --do get --indicator tickers",
       };
       const response = await axios.post(
-        "https://united-iguana-superb.ngrok-free.app/ohlc",
+        "https://gorgeous-turtle-loudly.ngrok-free.app/ohlc",
         obj
       );
       const arr = response.data.tickers;
