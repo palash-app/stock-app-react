@@ -1,5 +1,4 @@
 // TreeView.js
-
 import React, { useEffect, useState } from "react";
 import "./treeView.css"; // Import the CSS file
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -80,11 +79,13 @@ const TreeNode = ({ title, queries, handleQueryChange }) => {
   );
 };
 
-const TreeView = ({ setQuery }) => {
+const TreeView = ({ setQuery, data }) => {
   const [queryList, setQueryList] = useState([]);
   const [givenList, setGivenList] = useState([]);
   const [whenList, setWhenList] = useState([]);
   const [thenList, setThenList] = useState([]);
+
+  console.log(data);
 
   const handleGivenChange = q => {
     setGivenList(q);
@@ -123,6 +124,11 @@ const TreeView = ({ setQuery }) => {
   }, [givenList, whenList, thenList]);
 
   useEffect(() => {
+    if (!!data) {
+      setGivenList(data.given);
+      setWhenList(data.when);
+      setThenList(data.then);
+    }
     fetchQueries();
   }, []);
 

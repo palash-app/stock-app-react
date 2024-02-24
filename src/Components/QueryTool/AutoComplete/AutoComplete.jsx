@@ -7,19 +7,19 @@ const AutocompleteInput = ({ addQuery, queries }) => {
   const [inputValue, setInputValue] = useState("");
   const [filteredOptions, setFilteredOptions] = useState([]);
   const [selectedOptionIndex, setSelectedOptionIndex] = useState(-1);
-  const [isFocused, setIsFocused] = useState(false);
+  const [isFocused, setIsFocused] = useState(true);
   const testInput = useRef();
   const suggestionsRef = useRef();
 
-  const handleFocus = () => {
+  const handleFocus = e => {
+    console.log(e.target.onFocus);
     setIsFocused(true);
-    // Additional logic you want to execute when input is focused
   };
 
-  const handleBlur = () => {
-    setIsFocused(false);
-    // Additional logic you want to execute when input is blurred
-  };
+  // const handleBlur = e => {
+  //   e.stopPropagation();
+  //   setIsFocused(false);
+  // };
 
   useEffect(() => {
     const arr = queries.map(item => item.statements).flat();
@@ -95,8 +95,9 @@ const AutocompleteInput = ({ addQuery, queries }) => {
         value={inputValue}
         onChange={handleInputChange}
         onKeyDown={handleKeyDown}
-        onFocus={handleFocus}
-        onBlur={handleBlur}
+        onFocus={e => {
+          handleFocus(e);
+        }}
         placeholder="Type to search..."
         className="form-control rounded-0"
       />

@@ -21,6 +21,8 @@ const QueryTool = ({ removeSubModule, subModule }) => {
   const [query, setQuery] = useState({ given: [], when: [], then: [] });
   const title = useRef();
 
+  console.log(subModule);
+
   const submitQuery = async () => {
     let match = checkQuery(query);
     let feature = title.current.innerText;
@@ -111,7 +113,7 @@ const QueryTool = ({ removeSubModule, subModule }) => {
             </div>
           </div>
           <hr className="mt-0" />
-          <TreeView setQuery={setQuery} />
+          <TreeView setQuery={setQuery} data={subModule.data} />
           <div className="d-flex justify-content-end m-2"></div>
         </Card.Body>
         {result.length > 0 && (

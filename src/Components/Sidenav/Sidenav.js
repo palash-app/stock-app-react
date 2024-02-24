@@ -5,16 +5,46 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 import QueryTool from "../QueryTool/QueryTool";
 
+const preModules = [
+  {
+    id: 100210120154231,
+    data: {
+      given: [
+        {
+          regex: "^(\\w+) (\\w+) (\\w+) (\\d+) ([><=!]+) (\\w+)$",
+          str: "day close ema 15 > close",
+        },
+      ],
+      when: [
+        {
+          regex: "^(\\w+) (\\w+) (\\w+) (\\d+) ([><=!]+) (\\w+)$",
+          str: "day close ema 20 > close",
+        },
+      ],
+      then: [
+        {
+          regex: "^stocks (\\w+(?:,*\\s*\\w*)*)$",
+          str: "stocks <list>",
+        },
+      ],
+    },
+  },
+];
+
 function Sidenav() {
-  const [subModules, setSubModules] = useState([]);
+  const [subModules, setSubModules] = useState(preModules);
 
   const addSubModule = () => {
     const newSubModules = [
       ...subModules,
-      { id: `${Date.now() + Math.floor(Math.random() * 10000)}` },
+      { id: `${Date.now() + Math.floor(Math.random() * 10000)}`, data: {} },
     ];
     setSubModules(newSubModules);
   };
+
+  useEffect(() => {
+    console.log(subModules);
+  }, [subModules]);
 
   const removeSubModule = id => {
     const updatedSubModules = subModules.filter(
