@@ -155,7 +155,6 @@ const TradeChart = props => {
             series={series}
             type="candlestick"
             height="650px"
-            height="650px"
             title="TCS Chart"
           />
         </Col>
