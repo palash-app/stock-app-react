@@ -32,6 +32,7 @@ const QueryTool = ({ removeSubModule, subModule }) => {
 
       // ↓↓↓↓↓↓ submit api with this string below(str) ↓↓↓↓↓↓↓
       let str = conCatQuery(obj);
+      console.log(str);
       // ↑↑↑↑↑↑ submit api with this string below(str) ↑↑↑↑↑↑↑
 
       //  Testing Loader ---------------->>>>
@@ -139,8 +140,8 @@ const QueryTool = ({ removeSubModule, subModule }) => {
               </div>
             </div>
             <ul>
-              {result.map(item => (
-                <li>{item}</li>
+              {result.map((item, index) => (
+                <li key={index}>{item}</li>
               ))}
             </ul>
           </Card.Footer>

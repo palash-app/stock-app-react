@@ -64,7 +64,7 @@ const SelectedQuery = ({ query, changeQuery, idx }) => {
             </select>
           );
         } else {
-          return <>{str}</>;
+          return <span style={{ marginLeft: "5px" }}>{str}</span>;
         }
       })}
     </div>
