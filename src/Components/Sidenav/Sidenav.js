@@ -11,20 +11,78 @@ const preModules = [
     data: {
       given: [
         {
-          regex: "^(\\w+) (\\w+) (\\w+) (\\d+) ([><=!]+) (\\w+)$",
-          str: "day close ema 15 > close",
+          id: "1708775211356",
+          statement: "all stocks",
+          values: {
+            0: "all",
+          },
+          obj: {
+            regex: "^(\\w+) stocks$",
+            statements: ["all stocks", "nifty50 stocks", "nifty100 stocks"],
+            variables: {
+              0: ["all", "nifty50", "nifty100"],
+            },
+          },
         },
       ],
       when: [
         {
-          regex: "^(\\w+) (\\w+) (\\w+) (\\d+) ([><=!]+) (\\w+)$",
-          str: "day close ema 20 > close",
+          id: "1708775382044",
+          statement: "week close ema <number> > close",
+          values: {
+            0: "week",
+            1: "high",
+            2: "ma",
+            3: 15,
+            4: "<",
+            5: "open",
+          },
+          obj: {
+            regex: "^(\\w+) (\\w+) (\\w+) (\\d+) ([><=!]+) (\\w+)$",
+            statements: [
+              "day close ema <number> > close",
+              "week close ema <number> > close",
+              "hour close ema <number> > close",
+            ],
+            variables: {
+              0: ["day", "week", "hour"],
+              1: ["close", "open", "high", "low"],
+              2: ["ema", "ma"],
+              3: ["<number>"],
+              4: [">", "<", "!=", "==", ">=", "<="],
+              5: ["close", "open", "high", "low"],
+            },
+          },
         },
       ],
       then: [
         {
-          regex: "^stocks (\\w+(?:,*\\s*\\w*)*)$",
-          str: "stocks <list>",
+          id: "1708775382044",
+          statement: "week close ema <number> > close",
+          values: {
+            0: "hour",
+            1: "open",
+            2: "ema",
+            3: 25,
+            4: "<=",
+            5: "close",
+          },
+          obj: {
+            regex: "^(\\w+) (\\w+) (\\w+) (\\d+) ([><=!]+) (\\w+)$",
+            statements: [
+              "day close ema <number> > close",
+              "week close ema <number> > close",
+              "hour close ema <number> > close",
+            ],
+            variables: {
+              0: ["day", "week", "hour"],
+              1: ["close", "open", "high", "low"],
+              2: ["ema", "ma"],
+              3: ["<number>"],
+              4: [">", "<", "!=", "==", ">=", "<="],
+              5: ["close", "open", "high", "low"],
+            },
+          },
         },
       ],
     },
@@ -32,7 +90,7 @@ const preModules = [
 ];
 
 function Sidenav() {
-  const [subModules, setSubModules] = useState(preModules);
+  const [subModules, setSubModules] = useState([]);
 
   const addSubModule = () => {
     const newSubModules = [
@@ -41,10 +99,6 @@ function Sidenav() {
     ];
     setSubModules(newSubModules);
   };
-
-  useEffect(() => {
-    console.log(subModules);
-  }, [subModules]);
 
   const removeSubModule = id => {
     const updatedSubModules = subModules.filter(

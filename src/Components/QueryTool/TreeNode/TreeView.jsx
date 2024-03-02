@@ -124,11 +124,6 @@ const TreeView = ({ setQuery, data }) => {
   }, [givenList, whenList, thenList]);
 
   useEffect(() => {
-    if (!!data) {
-      setGivenList(data.given);
-      setWhenList(data.when);
-      setThenList(data.then);
-    }
     fetchQueries();
   }, []);
 

@@ -9,6 +9,12 @@
   color: #0c836a;
 }
 
+#card_title {
+  font-size: 0.8em;
+  padding: 0px;
+  border: none;
+  width: fit-content;
+}
 .spinner {
   animation: spinning 1.1s infinite linear;
 }

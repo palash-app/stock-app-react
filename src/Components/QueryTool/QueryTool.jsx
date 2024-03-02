@@ -1,8 +1,7 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import {
   faAngleDown,
   faMinus,
-  faPenToSquare,
   faPlay,
   faRotateRight,
   faXmark,
@@ -19,13 +18,11 @@ const QueryTool = ({ removeSubModule, subModule }) => {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState([]);
   const [query, setQuery] = useState({ given: [], when: [], then: [] });
-  const title = useRef();
-
-  console.log(subModule);
+  const [title, setTitle] = useState("Relative Strength");
 
   const submitQuery = async () => {
     let match = checkQuery(query);
-    let feature = title.current.innerText;
+    let feature = title;
     setResult([]);
     if (!match) {
       alert("please Check all the query");
@@ -65,17 +62,14 @@ const QueryTool = ({ removeSubModule, subModule }) => {
             style={{ height: "35px" }}
           >
             <div>
-              <span>
-                <FontAwesomeIcon icon={faPenToSquare} />
-              </span>
-              <span
+              <input
+                id="card_title"
                 className="fw-bold p-1"
-                contentEditable
-                ref={title}
-                style={{ fontSize: "0.8rem" }}
-              >
-                Relative strength
-              </span>
+                value={title}
+                onChange={e => {
+                  setTitle(e.target.value);
+                }}
+              ></input>
             </div>
             <div>
               {loading ? (
@@ -113,9 +107,11 @@ const QueryTool = ({ removeSubModule, subModule }) => {
             </div>
           </div>
           <hr className="mt-0" />
-          <TreeView setQuery={setQuery} data={subModule.data} />
+          <TreeView setQuery={setQuery} data={subModule} />
           <div className="d-flex justify-content-end m-2"></div>
         </Card.Body>
+
+        {/* Result */}
         {result.length > 0 && (
           <Card.Footer className={`m-1 p-1 ${resultExpand ? "" : "expanded"}`}>
             <div
