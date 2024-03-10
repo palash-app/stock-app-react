@@ -26,7 +26,7 @@ const QueryTool = ({ removeSubModule, subModule }) => {
     const conjunction_keyword = ['And ', '* ']
 
     const conCatQuery = obj => {
-        let str = `Feature:${obj.feature}\nScenario:${obj.scenario}\n`;
+        let str = `Feature:v2\nScenario:${obj.scenario}\n`;
         let given = obj.given.map(g => g.str).join("\n* ");
         let when = obj.when.map(g => g.str).join("\n* ");
         let then = obj.then.map(g => g.str).join("\n* ");
@@ -37,21 +37,9 @@ const QueryTool = ({ removeSubModule, subModule }) => {
         var tickers = []
         if (apiResponse.status) {
             var gherkin_response = apiResponse.data
-            var feature = Object.keys(gherkin_response["gherkin"])[0]
-            for (var scenario in gherkin_response['gherkin'][feature]) {
-                var current_keyword = ""
-                var steps = gherkin_response['gherkin'][feature][scenario]
-                steps.forEach(step => {
-                    if (step['type'] == 'Then ' || (current_keyword == 'Then ' && current_keyword in conjunction_keyword)) {
-                        step['result']['pipe_tickers'].forEach(ticker => {
-                            if (!tickers.includes(ticker)) {
-                                tickers.push(ticker)
-                            }
-                        })
-                        current_keyword = 'Then '
-                    }
-                });
-            }
+            gherkin_response = gherkin_response['gherkin']
+            var feature = Object.keys(gherkin_response)[0]
+            var tickers = gherkin_response[feature]['tickers']
         } else {
             // Prompt user of error
             alert("Error in query")
