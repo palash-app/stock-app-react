@@ -1,5 +1,3 @@
-/* AutocompleteInput.css */
-
 .autocomplete-container {
   position: relative;
   width: calc(100% - 20px);
@@ -23,5 +21,11 @@
 }
 
 .autocomplete-suggestions li:hover {
+  background-color: #fff6e9;
+  color: #0d9276;
+}
+
+.current-option {
   background-color: #f8f9fa;
+  color: #0d9276;
 }

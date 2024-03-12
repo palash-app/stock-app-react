@@ -1,18 +1,26 @@
 # TODO
-![alt text](image.png)
-0. How to send userconfig () - todo suvra 
-1. Login not working use oauth. - todo palash
-2. Result of query not made. - to do suvra
-3. Then statement not made - waiting for palash - start now
-4. The drop-down are not selected when you use up-down button - todo suvra
+
+0. How to send userconfig () - todo suvra
+1. Login not working use oauth. - todo palash (ngrok not supported) - todo suvro
+2. Result of query not made. - to do suvro - Done
+3. Then statement not made - waiting for palash - done
+4. The drop-down are not selected when you use up-down button - todo suvro - Done
+    * You can't select using mouse click - todo suvro
+    * When user clicks the text box it should show all possible statements - todo suvro
 5. All query have the same name - change to new query. - todo palash send from server side
-6. What is the red button for? - ignore
+6. What is the red button for? - done -changed to save by suvro
 7. TCS chart still as chart title. Was any cleaning done? - ignore
-8. Remove AddChart button from header - todo suvro
+8. Remove AddChart button from header - todo suvro - Done
 9. Then statement needs regex statement it now has ^ something - done.
 10. Test git pull request
+11. Need a scroll bar that scrolls inside the query box - todo suvro
+12. Place the textbox beside Given Then etc.
+13. Missing spaces relative`space`strength
+![Alt text](image.png)
+14. Check if query data is fetched from server - todo suvro
 
 ### Future
+
 1. Chart doesn't have ability to change interval.
 2. Pan doesn't work. Remove this use tradingview chart.
 
@@ -86,4 +94,3 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-

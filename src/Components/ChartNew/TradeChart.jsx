@@ -52,10 +52,10 @@ const TradeChart = props => {
     const fetchData = async () => {
       try {
         const data = {
-          query: `webserver --ticker ${stock} --interval day --do get --indicator ohlc --n 1000`,
+          query: `webserver --ticker ${stock} --interval day --do get --indicator ohlc --n 100`,
         };
         const response = await axios.post(
-          "http://localhost:8087/ohlc",
+          "https://gorgeous-turtle-loudly.ngrok-free.app/ohlc",
           data
         );
 
@@ -146,7 +146,7 @@ const TradeChart = props => {
       </Row>
       <Row
         style={{
-          height: "100vh",
+          height: "80vh",
         }}
       >
         <Col>

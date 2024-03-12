@@ -25,10 +25,15 @@ function Sidenav() {
 
   return (
     <aside className="sidenav">
-      <button className="button-13" role="button" onClick={addSubModule}>
-        <FontAwesomeIcon icon={faPlus} />
-        Add Query
-      </button>
+      <div className="side-head d-flex justify-content-between align-items-center">
+        <button className="button-13" onClick={addSubModule}>
+          <FontAwesomeIcon icon={faPlus} />
+          Add Query
+        </button>
+        {subModules.length > 0 && (
+          <button className="count-btn">{subModules.length}</button>
+        )}
+      </div>
 
       <div className="module">
         {subModules.map((subModule, index) => (
