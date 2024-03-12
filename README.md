@@ -12,6 +12,9 @@
 8. Remove AddChart button from header - todo suvro - Done
 9. Then statement needs regex statement it now has ^ something - done.
 10. Test git pull request
+11. Better user experience, Dynamic resized components
+12. Query Failed response
+13. Scrollable result section
 
 ### Future
 
