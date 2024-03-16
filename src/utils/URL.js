@@ -1,7 +1,10 @@
+const BASE_URL = "https://gorgeous-turtle-loudly.ngrok-free.app";
 const API = {
+  'ohlc': `${BASE_URL}/ohlc`,
+  'gherkin-query': `${BASE_URL}/gherkin-query`,
   // BASE_URL: 'http://192.168.29.29:5001/api/',
   //BASE_URL: 'https://stage-api.welrm.com/api/',
-  BASE_URL: "https://api.welrm.com/api/",
+  // BASE_URL: "https://api.welrm.com/api/",,
   //BASE_URL : 'https://33ba-103-101-213-114.ngrok-free.app/api/',
   COUNT: "user/count",
   SEND_OTP: "user/send-otp",
