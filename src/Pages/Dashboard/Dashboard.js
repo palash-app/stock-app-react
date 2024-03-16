@@ -49,35 +49,20 @@ function Dashboard() {
       <Sidenav />
       <div className="main">
         <Header addChart={addChart} />
-        <div
-          style={{
-            display: "flex",
-            flexWrap: "wrap",
-            gap: 10,
-            marginTop: "10px",
-          }}
-        >
-          {charts.map(chart => (
-            <div
-              key={chart.id}
-              style={{ flex: 1, boxSizing: "border-box", minWidth: 0 }}
-            >
-              {/* <Chartview
-                id={chart.id}
-                addChart={addChart}
-                removeChart={removeChart}
-                closable={charts.length > 1}
-                tickers={tickers}
-              /> */}
-              <TradeChart
-                id={chart.id}
-                addChart={addChart}
-                removeChart={removeChart}
-                closable={charts.length > 1}
-                tickers={tickers}
-              />
-            </div>
-          ))}
+        <div className="dashboard">
+          <div className="dashboard-content">
+            {charts.map(chart => (
+              <div className="chart-container" key={chart.id}>
+                <TradeChart
+                  id={chart.id}
+                  addChart={addChart}
+                  removeChart={removeChart}
+                  closable={charts.length > 1}
+                  tickers={tickers}
+                />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>

@@ -4,9 +4,9 @@
   height: calc(100vh - 10px);
   border-radius: 10px;
   background: linear-gradient(145deg, #44adf3, #3a92cc);
-  box-shadow: 10px 10px 20px #3d4042, 0px 0px 0px #4dc4ff;
+  box-shadow: 5px 5px 10px #3d4042, 0px 0px 0px #4dc4ff;
   color: #fff6e9;
-  min-width: 300px;
+  width: 300px;
 }
 
 .side-Titlehead {

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ReactApexChart from "react-apexcharts";
-import { Container, Row, Col, Form, Modal } from "react-bootstrap";
+import { Container, Row, Col, Form, Modal, Card } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Dropdown from "react-bootstrap/Dropdown";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -17,7 +17,6 @@ const TradeChart = props => {
   const { tickers, addChart, id, removeChart, closable } = props;
   const [current, setCurrent] = useState(0);
   const [data, setData] = useState([]);
-  const [show, setShow] = useState(true);
 
   const options = {
     chart: {
@@ -76,29 +75,30 @@ const TradeChart = props => {
   }, [current, tickers]);
 
   return (
-    <Container fluid>
-      <Row className="my-1">
-        <Col>
-          <div className="d-flex gx-1">
-            <button
-              className="subButton"
-              onClick={() => {
-                setCurrent(prev => prev - 1);
-              }}
-              disabled={current == 0}
-            >
-              <FontAwesomeIcon icon={faChevronLeft} />
-            </button>
-            <button
-              className="subButton"
-              onClick={() => {
-                setCurrent(prev => prev + 1);
-              }}
-              disabled={current == tickers.length - 1}
-            >
-              <FontAwesomeIcon icon={faChevronRight} />
-            </button>
-            {/* <Dropdown className="dropDown">
+    <Card>
+      <Card.Body className="p-1">
+        <Row className="my-1">
+          <Col>
+            <div className="d-flex gx-1">
+              <button
+                className="subButton"
+                onClick={() => {
+                  setCurrent(prev => prev - 1);
+                }}
+                disabled={current == 0}
+              >
+                <FontAwesomeIcon icon={faChevronLeft} />
+              </button>
+              <button
+                className="subButton"
+                onClick={() => {
+                  setCurrent(prev => prev + 1);
+                }}
+                disabled={current == tickers.length - 1}
+              >
+                <FontAwesomeIcon icon={faChevronRight} />
+              </button>
+              {/* <Dropdown className="dropDown">
               <Dropdown.Toggle variant="success" id="dropdown-basic">
                 {tickers[current]}
               </Dropdown.Toggle>
@@ -116,51 +116,48 @@ const TradeChart = props => {
                 <Dropdown.Item>No option</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown> */}
-            <div>
-              <Form.Select
-                className="bg-success text-light"
-                value={current}
-                onChange={e => handleClick(e.target.value)}
+              <div>
+                <Form.Select
+                  className="bg-success text-light"
+                  value={current}
+                  onChange={e => handleClick(e.target.value)}
+                >
+                  {tickers &&
+                    tickers.map((ticker, index) => (
+                      <option key={ticker} value={index}>
+                        {ticker}
+                      </option>
+                    ))}
+                </Form.Select>
+              </div>
+              <button className="subButton" onClick={addChart}>
+                <FontAwesomeIcon icon={faPlus} />
+              </button>
+              <button
+                className="subButton"
+                disabled={!closable}
+                onClick={() => {
+                  removeChart(id);
+                }}
               >
-                {tickers &&
-                  tickers.map((ticker, index) => (
-                    <option key={ticker} value={index}>
-                      {ticker}
-                    </option>
-                  ))}
-              </Form.Select>
+                <FontAwesomeIcon icon={faXmark} />
+              </button>
             </div>
-            <button className="subButton" onClick={addChart}>
-              <FontAwesomeIcon icon={faPlus} />
-            </button>
-            <button
-              className="subButton"
-              disabled={!closable}
-              onClick={() => {
-                removeChart(id);
-              }}
-            >
-              <FontAwesomeIcon icon={faXmark} />
-            </button>
-          </div>
-        </Col>
-      </Row>
-      <Row
-        style={{
-          height: "80vh",
-        }}
-      >
-        <Col>
-          <ReactApexChart
-            options={options}
-            series={series}
-            type="candlestick"
-            height="350px"
-            title="TCS Chart"
-          />
-        </Col>
-      </Row>
-    </Container>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <ReactApexChart
+              options={options}
+              series={series}
+              type="candlestick"
+              height="350px"
+              title="TCS Chart"
+            />
+          </Col>
+        </Row>
+      </Card.Body>
+    </Card>
   );
 };
 

@@ -2,11 +2,33 @@
   width: 100vw;
   padding: 5px;
   display: flex;
+  background-color: #fff6e9;
 }
 
 .main {
   display: flex;
-  margin-left: 10px;
   flex-direction: column;
-  width: calc(100vw - 280px);
+  margin-left: 10px;
+  width: calc(100vw - 310px);
+}
+.dashboard {
+  width: 100%;
+  height: calc(100vh - 70px);
+  overflow: hidden;
+  overflow-y: scroll;
+}
+
+.dashboard-content {
+  margin-top: 10px;
+  padding: 5px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 5px;
+}
+
+.chart-container {
+  min-width: 500px;
+  flex: 1 0 500px;
+  box-sizing: border-box;
+  transition: position 0.5s ease;
 }
