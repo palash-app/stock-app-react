@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   faAngleDown,
   faMinus,
@@ -10,7 +10,10 @@ import { Card } from "react-bootstrap";
 import TreeView from "./TreeNode/TreeView";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./query.css";
-import { checkQuery } from "../../utils/services";
+import { checkQuery, replaceItemAtIndex } from "../../utils/services";
+import { useRecoilState } from "recoil";
+import { queryAtom } from "../../utils/state";
+import { toast } from "react-toastify";
 
 const QueryTool = ({ removeSubModule, subModule }) => {
   const [expanded, setExpanded] = useState(true);
@@ -19,13 +22,16 @@ const QueryTool = ({ removeSubModule, subModule }) => {
   const [result, setResult] = useState([]);
   const [query, setQuery] = useState({ given: [], when: [], then: [] });
   const [title, setTitle] = useState("Relative Strength");
+  const [qAtom, setQAtom] = useRecoilState(queryAtom);
+  const index = qAtom.findIndex(listItem => listItem.id == subModule.id);
 
   const submitQuery = async () => {
     let match = checkQuery(query);
     let feature = title;
     setResult([]);
     if (!match) {
-      alert("please Check all the query");
+      console.log("error");
+      toast.error("Check the query");
     } else {
       let obj = { feature: feature, scenario: feature, ...query };
       setLoading(true);
@@ -37,12 +43,27 @@ const QueryTool = ({ removeSubModule, subModule }) => {
 
       //  Testing Loader ---------------->>>>
       await new Promise(resolve => setTimeout(resolve, 1000));
-
       //  set Demo result list ------->>>
-      setResult(["ABCD", "EFGH", "IJKL"]);
-
+      setResult([
+        "ABCD",
+        "EFGH",
+        "IJKL",
+        "ABCD",
+        "EFGH",
+        "IJKL",
+        "ABCD",
+        "EFGH",
+        "IJKL",
+        "ABCD",
+        "EFGH",
+        "IJKL",
+        "ABCD",
+        "EFGH",
+        "IJKL",
+      ]);
       //  Loading off ----->>>
       setLoading(false);
+      toast.success("Submit Successfull ");
     }
   };
 
@@ -54,15 +75,25 @@ const QueryTool = ({ removeSubModule, subModule }) => {
     return `${str}Given ${given}\nWhen ${when}\nThen ${then}`;
   };
 
+  useEffect(() => {
+    const newList = replaceItemAtIndex(qAtom, index, {
+      ...subModule,
+      given: query.given,
+      when: query.when,
+      then: query.then,
+    });
+    setQAtom(newList);
+  }, [query]);
+
   return (
     <>
       <Card id="query-card" key={subModule.id}>
         <Card.Body className={`m-1 p-1 ${expanded ? "" : "expanded"}`}>
           <div
-            className="d-flex justify-content-between mx-2 align-items-center"
+            className="d-flex justify-content-between gx-1 mx-1 align-items-center"
             style={{ height: "35px" }}
           >
-            <div>
+            <div style={{ width: "50%" }}>
               <input
                 id="card_title"
                 className="fw-bold p-1"
@@ -72,7 +103,7 @@ const QueryTool = ({ removeSubModule, subModule }) => {
                 }}
               ></input>
             </div>
-            <div>
+            <div className="card-buttons">
               {loading ? (
                 <button className="btn btn-sm border-none">
                   <FontAwesomeIcon className="spinner" icon={faRotateRight} />
@@ -139,9 +170,9 @@ const QueryTool = ({ removeSubModule, subModule }) => {
                 </button>
               </div>
             </div>
-            <ul>
-              {result.map((item, index) => (
-                <li key={index}>{item}</li>
+            <ul style={{ height: "200px", overflowY: "auto" }}>
+              {result.map((item, idx) => (
+                <li key={idx}>{item}</li>
               ))}
             </ul>
           </Card.Footer>

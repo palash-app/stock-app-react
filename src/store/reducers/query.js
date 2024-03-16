@@ -1,46 +1,37 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  given: [],
-  when: [],
-  then: [],
+  query: [],
 };
 
 const querySlice = createSlice({
   name: "query",
   initialState,
   reducers: {
-    addGivenQuery: (state, { payload }) => {
-      const giv = state.given;
-      state.given = [...giv, payload];
-      state.given.unshift(payload);
-      console.log(payload);
+    addQuery: (state, { payload }) => {
+      const giv = state.query;
+      if (Array.isArray(payload)) {
+        state.query = [...giv, ...payload];
+      } else {
+        state.query = [...giv, payload];
+      }
     },
 
-    addWhenQuery: (state, { payload }) => {
-      const wh = state.when;
-      state.when = [...wh, payload];
+    addPreQuery: (state, { payload }) => {
+      state.query = [...payload];
     },
-    addThenQuery: (state, { payload }) => {
-      const th = state.then;
-      state.then = [...th, payload];
-    },
+
     updateQuery: (state, { payload }) => {
       let { s, index } = payload;
-      state.given[index] = s;
-    },
-    resetQuery: state => {
-      state = initialState;
+      let q = state.query;
+      let arr = [...q];
+      console.log(payload);
+      arr[index] = s;
+      state.query = arr;
     },
   },
 });
 
-export const {
-  addGivenQuery,
-  addWhenQuery,
-  addThenQuery,
-  resetQuery,
-  updateQuery,
-} = querySlice.actions;
+export const { addQuery, addPreQuery, updateQuery } = querySlice.actions;
 
 export default querySlice.reducer;

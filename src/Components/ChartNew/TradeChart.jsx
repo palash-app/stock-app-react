@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ReactApexChart from "react-apexcharts";
-import { Container, Row, Col, Form } from "react-bootstrap";
+import { Container, Row, Col, Form, Modal } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Dropdown from "react-bootstrap/Dropdown";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -17,6 +17,7 @@ const TradeChart = props => {
   const { tickers, addChart, id, removeChart, closable } = props;
   const [current, setCurrent] = useState(0);
   const [data, setData] = useState([]);
+  const [show, setShow] = useState(true);
 
   const options = {
     chart: {
@@ -52,7 +53,7 @@ const TradeChart = props => {
     const fetchData = async () => {
       try {
         const data = {
-          query: `webserver --ticker ${stock} --interval day --do get --indicator ohlc --n 100`,
+          query: `webserver --ticker ${stock} --interval minute --do get --indicator ohlc --n 100`,
         };
         const response = await axios.post(
           "https://communal-vocal-mayfly.ngrok-free.app/ohlc",

@@ -4,6 +4,7 @@ import Dashboard from "../Pages/Dashboard/Dashboard";
 import Login from "../Pages/Login/Login";
 import PublicRoute from "./PublicRoute";
 import PrivateRoute from "./PrivateRoute";
+import { ToastContainer } from "react-toastify";
 
 function Routing() {
   return (
@@ -16,6 +17,16 @@ function Routing() {
           <Route path="/" element={<Dashboard />} />
         </Route>
       </Routes>
+      <ToastContainer
+        autoClose={2000}
+        draggable={false}
+        position="top-right"
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnHover
+      />
     </Router>
   );
 }

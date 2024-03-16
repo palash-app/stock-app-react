@@ -2,13 +2,18 @@
 import React, { useEffect, useState } from "react";
 import "./treeView.css"; // Import the CSS file
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
+import {
+  faMinus,
+  faPlus,
+  faRectangleXmark,
+  faXmark,
+} from "@fortawesome/free-solid-svg-icons";
 import "react-bootstrap-typeahead/css/Typeahead.css";
 import axios from "axios";
 import AutocompleteInput from "../AutoComplete/AutoComplete";
 import SelectedQuery from "./SelectedQuery";
 
-const TreeNode = ({ title, queries, handleQueryChange }) => {
+const TreeNode = ({ title, queries, preData, handleQueryChange }) => {
   const [isGivenExpanded, setGivenExpanded] = useState(false);
   const [givenChild, setGivenChild] = useState([]);
   const [statements, setStatements] = useState([]);
@@ -16,26 +21,58 @@ const TreeNode = ({ title, queries, handleQueryChange }) => {
   const addQuery = (obj, state) => {
     let q = {
       id: `${new Date().getTime()}`,
-      statement: state,
+      str: state,
       obj,
     };
-
-    setStatements(prev => [...prev, { regex: obj.regex, str: state }]);
+    setStatements(prev => [
+      ...prev,
+      { id: q.id, regex: obj.regex, str: state, obj: obj },
+    ]);
     setGivenChild(prev => [...prev, q]);
   };
 
-  const changeQuery = (s, index) => {
-    let arr = [...givenChild];
-    let arr1 = [...statements];
-    arr[index].statement = s;
-    arr1[index].str = s;
+  function updateItemById(array, id, updateCallback) {
+    return array.map(item => {
+      if (item.id === id) {
+        return updateCallback(item);
+      }
+      return item;
+    });
+  }
+  const closeQuery = id => {
+    const arr = givenChild.filter(item => item.id !== id);
+    const arr1 = statements.filter(item => item.id !== id);
     setGivenChild(arr);
     setStatements(arr1);
   };
 
+  const changeQuery = (s, id) => {
+    const newArray = updateItemById(statements, id, currentItem => {
+      return {
+        ...currentItem,
+        str: s,
+      };
+    });
+    const newArray1 = updateItemById(givenChild, id, currentItem => {
+      return {
+        ...currentItem,
+        str: s,
+      };
+    });
+    setGivenChild(newArray1);
+    setStatements(newArray);
+  };
+
+  useEffect(() => {
+    if (!!preData) {
+      setGivenChild(preData);
+      setStatements(pre => [...pre, ...preData]);
+    }
+  }, [preData]);
+
   useEffect(() => {
     handleQueryChange(statements);
-  }, [statements, handleQueryChange]);
+  }, [statements]);
 
   return (
     <div className="tree-view">
@@ -64,13 +101,25 @@ const TreeNode = ({ title, queries, handleQueryChange }) => {
           {isGivenExpanded &&
             givenChild &&
             givenChild.map((item, index) => (
-              <li>
-                <SelectedQuery
-                  key={item.id}
-                  query={item}
-                  idx={index}
-                  changeQuery={changeQuery}
-                />
+              <li key={index}>
+                <div className="d-flex justify-content-between">
+                  <SelectedQuery
+                    key={item.id}
+                    query={item}
+                    idx={index}
+                    changeQuery={changeQuery}
+                  />
+                  <div>
+                    <button
+                      className="close-btn"
+                      onClick={() => {
+                        closeQuery(item.id);
+                      }}
+                    >
+                      <FontAwesomeIcon icon={faRectangleXmark} />
+                    </button>
+                  </div>
+                </div>
               </li>
             ))}
         </ul>
@@ -85,11 +134,10 @@ const TreeView = ({ setQuery, data }) => {
   const [whenList, setWhenList] = useState([]);
   const [thenList, setThenList] = useState([]);
 
-  console.log(data);
-
   const handleGivenChange = q => {
     setGivenList(q);
   };
+
   const handleWhenChange = q => {
     setWhenList(q);
   };
@@ -132,16 +180,19 @@ const TreeView = ({ setQuery, data }) => {
       <TreeNode
         title="Given"
         queries={queryList}
+        preData={data.given}
         handleQueryChange={handleGivenChange}
       />
       <TreeNode
         title="When"
         queries={queryList}
+        preData={data.when}
         handleQueryChange={handleWhenChange}
       />
       <TreeNode
         title="Then"
         queries={queryList}
+        preData={data.then}
         handleQueryChange={handleThenChange}
       />
     </>

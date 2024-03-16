@@ -3,15 +3,29 @@ import React, { useEffect, useState } from "react";
 const SelectedQuery = ({ query, changeQuery, idx }) => {
   const [qvalue, setQvalue] = useState([]);
 
-  // Use useEffect with a dependency on query.statement to update qvalue
+  // Use useEffect with a dependency on query.str to update qvalue
   useEffect(() => {
-    setQvalue(query.statement.split(" "));
-  }, [query.statement]);
+    setQvalue(query.str.split(" "));
+  }, [query.str]);
 
   const handleChange = (e, index) => {
-    qvalue[index] = e.target.value;
-    const str = qvalue.join(" ");
-    changeQuery(str, idx);
+    // Create a copy of qvalue
+    const updatedQvalue = [...qvalue];
+    updatedQvalue[index] = e.target.value;
+    // Use the updatedQvalue to construct the new string
+    const str = updatedQvalue.join(" ");
+    // Call changeQuery with the new string
+    changeQuery(str, query.id);
+    // Update the state with the modified array
+    setQvalue(updatedQvalue);
+  };
+
+  const getInputWidth = value => {
+    let length = value.length;
+    if (value == "<number>") {
+      length = 1;
+    }
+    return Math.max(3, length * 0.9);
   };
 
   return (
@@ -26,7 +40,8 @@ const SelectedQuery = ({ query, changeQuery, idx }) => {
               key={index}
               type="number"
               min={10}
-              value={str} // Use the value attribute to control the input
+              value={str}
+              style={{ width: getInputWidth(str) + "rem" }}
               onChange={e => {
                 handleChange(e, index);
               }}
@@ -41,7 +56,8 @@ const SelectedQuery = ({ query, changeQuery, idx }) => {
             <input
               key={index}
               type="text"
-              value={str} // Use the value attribute to control the input
+              value={str}
+              style={{ width: getInputWidth(str) + "rem" }}
               onChange={e => {
                 handleChange(e, index);
               }}

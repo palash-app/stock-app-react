@@ -1,20 +1,25 @@
 .sidenav {
-  height: calc(100vh - 80px);
-  float: left;
+  /* height: calc(100vh - 80px); */
+
+  height: calc(100vh - 10px);
   border-radius: 10px;
   background: linear-gradient(145deg, #44adf3, #3a92cc);
   box-shadow: 10px 10px 20px #3d4042, 0px 0px 0px #4dc4ff;
-  width: 25%;
-  min-width: 200px;
-  padding-top: 15px;
-  margin-left: 10px;
+  color: #fff6e9;
+  min-width: 300px;
+}
+
+.side-Titlehead {
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  height: 30px;
+  text-align: center;
 }
 
 .side-head {
   height: 40px;
 }
 .module {
-  height: calc(100% - 50px);
+  height: calc(100% - 100px);
   padding: 10px;
   overflow-y: auto;
 }
@@ -51,10 +56,13 @@
 }
 
 .count-btn {
-  background: linear-gradient(145deg, #0e9c7e, #0c836a);
-  color: #bbe2ec;
+  /* background: linear-gradient(145deg, #0e9c7e, #0c836a); */
+  background: linear-gradient(145deg, #c8f2fd, #a8cbd4);
+  color: #0c836a;
+  border: 2px solid #0c836a;
+  /* color: #bbe2ec; */
   box-shadow: 5px 5px 10px #3d4042;
-  border: none;
+  /* border: none; */
   margin-right: 14px;
   margin-bottom: 10px;
   border-radius: 50%;
@@ -85,6 +93,6 @@
   justify-content: center;
 }
 
-.sidenav::-webkit-scrollbar {
+.module::-webkit-scrollbar {
   display: none;
 }

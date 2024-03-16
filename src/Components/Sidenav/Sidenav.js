@@ -2,113 +2,100 @@ import React, { useEffect, useState } from "react";
 import "./Sidenav.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
-
 import QueryTool from "../QueryTool/QueryTool";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { queryAtom, selectedQAtom } from "../../utils/state";
 
-const preModules = [
-  {
-    id: 100210120154231,
-    data: {
-      given: [
-        {
-          id: "1708775211356",
-          statement: "all stocks",
-          values: {
-            0: "all",
-          },
-          obj: {
-            regex: "^(\\w+) stocks$",
-            statements: ["all stocks", "nifty50 stocks", "nifty100 stocks"],
-            variables: {
-              0: ["all", "nifty50", "nifty100"],
-            },
-          },
-        },
-      ],
-      when: [
-        {
-          id: "1708775382044",
-          statement: "week close ema <number> > close",
-          values: {
-            0: "week",
-            1: "high",
-            2: "ma",
-            3: 15,
-            4: "<",
-            5: "open",
-          },
-          obj: {
-            regex: "^(\\w+) (\\w+) (\\w+) (\\d+) ([><=!]+) (\\w+)$",
-            statements: [
-              "day close ema <number> > close",
-              "week close ema <number> > close",
-              "hour close ema <number> > close",
-            ],
-            variables: {
-              0: ["day", "week", "hour"],
-              1: ["close", "open", "high", "low"],
-              2: ["ema", "ma"],
-              3: ["<number>"],
-              4: [">", "<", "!=", "==", ">=", "<="],
-              5: ["close", "open", "high", "low"],
-            },
-          },
-        },
-      ],
-      then: [
-        {
-          id: "1708775382044",
-          statement: "week close ema <number> > close",
-          values: {
-            0: "hour",
-            1: "open",
-            2: "ema",
-            3: 25,
-            4: "<=",
-            5: "close",
-          },
-          obj: {
-            regex: "^(\\w+) (\\w+) (\\w+) (\\d+) ([><=!]+) (\\w+)$",
-            statements: [
-              "day close ema <number> > close",
-              "week close ema <number> > close",
-              "hour close ema <number> > close",
-            ],
-            variables: {
-              0: ["day", "week", "hour"],
-              1: ["close", "open", "high", "low"],
-              2: ["ema", "ma"],
-              3: ["<number>"],
-              4: [">", "<", "!=", "==", ">=", "<="],
-              5: ["close", "open", "high", "low"],
-            },
-          },
-        },
-      ],
-    },
-  },
-];
+// const preVal = [
+//   {
+//     id: "1709575049852",
+//     given: [
+//       {
+//         id: "1709575049859",
+//         str: "week close ema 15 < close",
+//         obj: {
+//           regex: "^(\\w+) (\\w+) (\\w+) (\\d+) ([><=!]+) (\\w+)$",
+//           statements: [
+//             "day close ema <number> > close",
+//             "week close ema <number> > close",
+//             "hour close ema <number> > close",
+//           ],
+//           variables: {
+//             0: ["day", "week", "hour"],
+//             1: ["close", "open", "high", "low"],
+//             2: ["ema", "ma"],
+//             3: ["<number>"],
+//             4: [">", "<", "!=", "==", ">=", "<="],
+//             5: ["close", "open", "high", "low"],
+//           },
+//         },
+//       },
+//     ],
+//     when: [],
+//     then: [],
+//   },
+//   {
+//     id: "1709575049850",
+//     given: [
+//       {
+//         id: "1709575049859",
+//         str: "week close ema 15 < close",
+//         obj: {
+//           regex: "^(\\w+) (\\w+) (\\w+) (\\d+) ([><=!]+) (\\w+)$",
+//           statements: [
+//             "day close ema <number> > close",
+//             "week close ema <number> > close",
+//             "hour close ema <number> > close",
+//           ],
+//           variables: {
+//             0: ["day", "week", "hour"],
+//             1: ["close", "open", "high", "low"],
+//             2: ["ema", "ma"],
+//             3: ["<number>"],
+//             4: [">", "<", "!=", "==", ">=", "<="],
+//             5: ["close", "open", "high", "low"],
+//           },
+//         },
+//       },
+//     ],
+//     when: [],
+//     then: [],
+//   },
+// ];
 
+const preVal = [];
 function Sidenav() {
   const [subModules, setSubModules] = useState([]);
+  const [qAtom, setQAtom] = useRecoilState(queryAtom);
+  const selectedLayout = useRecoilValue(selectedQAtom);
 
   const addSubModule = () => {
-    const newSubModules = [
-      ...subModules,
-      { id: `${Date.now() + Math.floor(Math.random() * 10000)}`, data: {} },
-    ];
-    setSubModules(newSubModules);
+    const newObj = { id: `${Date.now() + Math.floor(Math.random() * 10000)}` };
+    const newSubModule = [...subModules, newObj];
+    setQAtom(pre => [...pre, newObj]);
+    setSubModules(newSubModule);
   };
 
   const removeSubModule = id => {
     const updatedSubModules = subModules.filter(
       subModule => subModule.id !== id
     );
+    setQAtom(updatedSubModules);
     setSubModules(updatedSubModules);
   };
 
+  useEffect(() => {
+    if (selectedLayout.length > 0) {
+      setSubModules(selectedLayout);
+    }
+  }, [selectedLayout]);
+
   return (
     <aside className="sidenav">
+      <div className="side-Titlehead">
+        <h3>Queries</h3>
+      </div>
+      <hr />
       <div className="side-head d-flex justify-content-between align-items-center">
         <button className="button-13" onClick={addSubModule}>
           <FontAwesomeIcon icon={faPlus} />
@@ -125,6 +112,7 @@ function Sidenav() {
             key={subModule.id}
             removeSubModule={removeSubModule}
             subModule={subModule}
+            index={index}
           />
         ))}
       </div>

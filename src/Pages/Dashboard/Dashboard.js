@@ -4,10 +4,15 @@ import Sidenav from "../../Components/Sidenav/Sidenav";
 import Header from "../../Components/Header/Header";
 import axios from "axios";
 import TradeChart from "../../Components/ChartNew/TradeChart";
+import { useRecoilValue } from "recoil";
+import { queryAtom } from "../../utils/state";
+import "react-toastify/dist/ReactToastify.css";
 
 function Dashboard() {
   const [charts, setCharts] = useState([{ id: 1 }]);
   const [tickers, setTickers] = useState([]);
+  const queries = useRecoilValue(queryAtom);
+  console.log(queries);
 
   const fetchTickers = async () => {
     try {
@@ -40,11 +45,18 @@ function Dashboard() {
   }, []);
 
   return (
-    <div>
-      <Header addChart={addChart} />
+    <div className="app-container">
       <Sidenav />
-      <div className="main" style={{ marginTop: "70px", marginLeft: "20px" }}>
-        <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
+      <div className="main">
+        <Header addChart={addChart} />
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: 10,
+            marginTop: "10px",
+          }}
+        >
           {charts.map(chart => (
             <div
               key={chart.id}

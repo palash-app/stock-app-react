@@ -95,3 +95,7 @@ export function checkArrayRegex(array) {
   // All checks passed for the array
   return true;
 }
+
+export function replaceItemAtIndex(arr, index, newValue) {
+  return [...arr.slice(0, index), newValue, ...arr.slice(index + 1)];
+}
