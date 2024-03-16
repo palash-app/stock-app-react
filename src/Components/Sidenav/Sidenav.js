@@ -3,70 +3,12 @@ import "./Sidenav.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import QueryTool from "../QueryTool/QueryTool";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { queryAtom, selectedQAtom } from "../../utils/state";
 
-// const preVal = [
-//   {
-//     id: "1709575049852",
-//     given: [
-//       {
-//         id: "1709575049859",
-//         str: "week close ema 15 < close",
-//         obj: {
-//           regex: "^(\\w+) (\\w+) (\\w+) (\\d+) ([><=!]+) (\\w+)$",
-//           statements: [
-//             "day close ema <number> > close",
-//             "week close ema <number> > close",
-//             "hour close ema <number> > close",
-//           ],
-//           variables: {
-//             0: ["day", "week", "hour"],
-//             1: ["close", "open", "high", "low"],
-//             2: ["ema", "ma"],
-//             3: ["<number>"],
-//             4: [">", "<", "!=", "==", ">=", "<="],
-//             5: ["close", "open", "high", "low"],
-//           },
-//         },
-//       },
-//     ],
-//     when: [],
-//     then: [],
-//   },
-//   {
-//     id: "1709575049850",
-//     given: [
-//       {
-//         id: "1709575049859",
-//         str: "week close ema 15 < close",
-//         obj: {
-//           regex: "^(\\w+) (\\w+) (\\w+) (\\d+) ([><=!]+) (\\w+)$",
-//           statements: [
-//             "day close ema <number> > close",
-//             "week close ema <number> > close",
-//             "hour close ema <number> > close",
-//           ],
-//           variables: {
-//             0: ["day", "week", "hour"],
-//             1: ["close", "open", "high", "low"],
-//             2: ["ema", "ma"],
-//             3: ["<number>"],
-//             4: [">", "<", "!=", "==", ">=", "<="],
-//             5: ["close", "open", "high", "low"],
-//           },
-//         },
-//       },
-//     ],
-//     when: [],
-//     then: [],
-//   },
-// ];
-
-const preVal = [];
 function Sidenav() {
   const [subModules, setSubModules] = useState([]);
-  const [qAtom, setQAtom] = useRecoilState(queryAtom);
+  const setQAtom = useSetRecoilState(queryAtom);
   const selectedLayout = useRecoilValue(selectedQAtom);
 
   const addSubModule = () => {

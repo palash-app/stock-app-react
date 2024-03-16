@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
+  faAngleLeft,
+  faAngleRight,
   faBars,
   faFloppyDisk,
   faPlus,
@@ -93,7 +95,11 @@ function Header() {
           onHide={() => {
             setShowCanvas(false);
           }}
-          style={{ maxWidth: "200px" }}
+          style={{
+            maxWidth: "200px",
+            backgroundColor: "#BBE2EC",
+            color: "#0D9276",
+          }}
         >
           <Offcanvas.Header closeButton className="fs-6 p-2">
             <Offcanvas.Title>Layouts</Offcanvas.Title>
@@ -108,8 +114,13 @@ function Header() {
                       textAlign: "center",
                       borderRadius: "0",
                       fontSize: "1em",
+                      backgroundColor: `${
+                        index == selectedIndex ? "#0D9276" : "#FFF6E9"
+                      }`,
+                      color: `${
+                        index == selectedIndex ? "#BBE2EC" : "#0D9276"
+                      }`,
                     }}
-                    active={index == selectedIndex}
                     onClick={() => {
                       selectLayout(item, index);
                     }}
@@ -124,6 +135,8 @@ function Header() {
                   textAlign: "center",
                   borderRadius: "0",
                   fontSize: "1em",
+                  backgroundColor: "#0D9276",
+                  color: "#BBE2EC",
                 }}
                 onClick={AddLayout}
               >
@@ -153,7 +166,11 @@ function Header() {
             setShowCanvas(true);
           }}
         >
-          <FontAwesomeIcon icon={faBars} />
+          {!showCanvas ? (
+            <FontAwesomeIcon icon={faAngleRight} />
+          ) : (
+            <FontAwesomeIcon icon={faAngleLeft} />
+          )}
         </button>
       </div>
     </div>
