@@ -20,7 +20,7 @@ function Dashboard() {
         query: "webserver --ticker all --do get --indicator tickers",
       };
       const response = await axios.post(
-        "https://communal-vocal-mayfly.ngrok-free.app/ohlc",
+        "https://gorgeous-turtle-loudly.ngrok-free.app",
         obj
       );
       const arr = response.data.tickers.slice(0, 20);
