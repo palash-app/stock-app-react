@@ -1,5 +1,5 @@
 import API from "./URL.js";
-
+import { Response } from "./utils.js";
 // export const callApi = async ({
 //   endpoint,
 //   method,
@@ -99,3 +99,29 @@ export function checkArrayRegex(array) {
 export function replaceItemAtIndex(arr, index, newValue) {
   return [...arr.slice(0, index), newValue, ...arr.slice(index + 1)];
 }
+
+export const apiPostWithTimeOut = async (url, timeout, data) => {
+  // Create a new promise that rejects after 2 minutes
+  const timeoutPromise = new Promise((resolve, reject) => {
+    setTimeout(() => reject(new Error('Request timed out')), timeout);
+  });
+
+  const fetchPromise = fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+  });
+
+  try {
+    const response = await Promise.race([fetchPromise, timeoutPromise]);
+    if (!response.ok) {
+      return new Response(response.ok, null, response.error);
+    }
+    const data = await response.json();
+    return new Response(response.ok, data, null);
+  } catch (error) {
+    return new Response(false, null, null);
+  }
+};
