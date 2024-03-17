@@ -50,7 +50,7 @@ const SelectedQuery = ({ query, changeQuery, idx }) => {
         }
         if (
           query.obj.variables[index] &&
-          query.obj.variables[index].includes("<list>")
+          (query.obj.variables[index].includes("<list>") || query.obj.variables[index].includes("<word>"))
         ) {
           return (
             <input
