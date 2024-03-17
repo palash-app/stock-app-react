@@ -1,49 +1,5 @@
-import API from "./URL.js";
+import API from "./url.js";
 import { Response } from "./utils.js";
-// export const callApi = async ({
-//   endpoint,
-//   method,
-//   body,
-//   accessToken,
-//   fileToUpload,
-// }) => {
-//   try {
-//     let headers = {};
-//     let baseUrl = `${API.BASE_URL}${endpoint}`;
-//     if (accessToken) {
-//       let token = await RetrieveData(Strings.TOKEN);
-//       headers["oauth-token"] = token;
-//     }
-//     if (fileToUpload) {
-//       headers["Content-Type"] = "multipart/form-data";
-//     } else {
-//       headers["Content-Type"] = "application/json";
-//     }
-//     let config = {
-//       method: method,
-//       url: baseUrl,
-//       data: body,
-//       headers: headers,
-//     };
-//     console.log(config);
-//     let response = await axios(config);
-//     if (response) {
-//       return { response: response.data, type: "success" };
-//     }
-//   } catch (err) {
-//     console.log("ERROR >>>>>>>>>>>>>>>>>>> ", err);
-//     if (err?.response?.data) {
-//       if (err.response.status === 401) {
-//         logout();
-//         return { response: err.response.data, type: "failure" };
-//       } else {
-//         return { response: err.response.data, type: "failure" };
-//       }
-//     } else {
-//       return { response: err, type: "failure" };
-//     }
-//   }
-// };
 
 export function checkQuery(query) {
   // Check "given" array
@@ -124,4 +80,8 @@ export const apiPostWithTimeOut = async (url, timeout, data) => {
   } catch (error) {
     return new Response(false, null, null);
   }
+};
+
+export function getValueOrDefault(obj, key, default_value) {
+  return obj.hasOwnProperty(key) ? obj[key] : default_value;
 };

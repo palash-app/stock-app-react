@@ -10,7 +10,8 @@ import { Card } from "react-bootstrap";
 import TreeView from "./TreeNode/TreeView";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./query.css";
-import { checkQuery, replaceItemAtIndex } from "../../utils/services";
+import { checkQuery, replaceItemAtIndex, apiPostWithTimeOut, getValueOrDefault } from "../../utils/services";
+import API from "../../utils/url";
 import { useRecoilState } from "recoil";
 import { queryAtom } from "../../utils/state";
 import { toast } from "react-toastify";
@@ -25,6 +26,25 @@ const QueryTool = ({ removeSubModule, subModule }) => {
   const [qAtom, setQAtom] = useRecoilState(queryAtom);
   const index = qAtom.findIndex(listItem => listItem.id == subModule.id);
 
+  const getResultList = apiResponse => {
+    var tickers = []
+    if (apiResponse.status) {
+      var gherkin_response = apiResponse.data['gherkin']
+      var scenario = Object.keys(gherkin_response)[0]
+      var error = getValueOrDefault(gherkin_response, 'error', '')
+      if (error == '') {
+        tickers = gherkin_response[scenario]['tickers']
+      } else {
+        console.error('gherkin_query error')
+      }
+    } else {
+      // Prompt user of error
+      alert("Error in query")
+    }
+
+    return tickers
+  };
+
   const submitQuery = async () => {
     let match = checkQuery(query);
     let feature = title;
@@ -36,39 +56,16 @@ const QueryTool = ({ removeSubModule, subModule }) => {
       let obj = { feature: feature, scenario: feature, ...query };
       setLoading(true);
 
-      // ↓↓↓↓↓↓ submit api with this string below(str) ↓↓↓↓↓↓↓
-      let str = conCatQuery(obj);
-      console.log(str);
-      // ↑↑↑↑↑↑ submit api with this string below(str) ↑↑↑↑↑↑↑
-
-      //  Testing Loader ---------------->>>>
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      //  set Demo result list ------->>>
-      setResult([
-        "ABCD",
-        "EFGH",
-        "IJKL",
-        "ABCD",
-        "EFGH",
-        "IJKL",
-        "ABCD",
-        "EFGH",
-        "IJKL",
-        "ABCD",
-        "EFGH",
-        "IJKL",
-        "ABCD",
-        "EFGH",
-        "IJKL",
-      ]);
-      //  Loading off ----->>>
+      let gherkinQuery = { "query": `webserver --gherkin ${conCatQuery(obj)} --indicator gherkin` };
+      let apiResponse = await apiPostWithTimeOut(API["gherkin-query"], 120000, gherkinQuery)
+      setResult(getResultList(apiResponse))
       setLoading(false);
       toast.success("Submit Successfull ");
     }
   };
 
   const conCatQuery = obj => {
-    let str = `Feature:${obj.feature}\nScenario:${obj.scenario}\n`;
+    let str = `Feature:v2\nScenario:${obj.scenario}\n`;
     let given = obj.given.map(g => g.str).join("\n* ");
     let when = obj.when.map(g => g.str).join("\n* ");
     let then = obj.then.map(g => g.str).join("\n* ");
