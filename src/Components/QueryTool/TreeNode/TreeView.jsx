@@ -12,6 +12,7 @@ import "react-bootstrap-typeahead/css/Typeahead.css";
 import axios from "axios";
 import AutocompleteInput from "../AutoComplete/AutoComplete";
 import SelectedQuery from "./SelectedQuery";
+import API from "../../../utils/url"
 
 const TreeNode = ({ title, queries, preData, handleQueryChange }) => {
   const [isGivenExpanded, setGivenExpanded] = useState(false);
@@ -151,7 +152,7 @@ const TreeView = ({ setQuery, data }) => {
         query: "statementlist --do get",
       };
       const response = await axios.post(
-        "https://gorgeous-turtle-loudly.ngrok-free.app",
+        API['root'],
         obj
       );
       if (response.status == 200) {

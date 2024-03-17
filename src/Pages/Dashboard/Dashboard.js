@@ -6,6 +6,7 @@ import axios from "axios";
 import TradeChart from "../../Components/ChartNew/TradeChart";
 import { useRecoilValue } from "recoil";
 import { queryAtom } from "../../utils/state";
+import API from "../../utils/url";
 import "react-toastify/dist/ReactToastify.css";
 
 function Dashboard() {
@@ -20,11 +21,11 @@ function Dashboard() {
         query: "webserver --ticker all --do get --indicator tickers",
       };
       const response = await axios.post(
-        "https://gorgeous-turtle-loudly.ngrok-free.app",
+        API['root'],
         obj
       );
-      const arr = response.data.tickers.slice(0, 20);
-      console.log(arr);
+      const arr = response.data.tickers;
+      // console.log(arr);
       setTickers(arr);
     } catch (err) {
       console.log(err);

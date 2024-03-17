@@ -12,6 +12,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { convertData } from "../../utils/utils";
 import axios from "axios";
+import API from "../../utils/url"
 
 const TradeChart = props => {
   const { tickers, addChart, id, removeChart, closable } = props;
@@ -55,7 +56,7 @@ const TradeChart = props => {
           query: `webserver --ticker ${stock} --interval minute --do get --indicator ohlc --n 100`,
         };
         const response = await axios.post(
-          "https://gorgeous-turtle-loudly.ngrok-free.app",
+          API['root'],
           data
         );
 
