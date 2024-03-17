@@ -12,6 +12,8 @@ import { useNavigate } from "react-router-dom";
 import { ListGroup, Modal, Offcanvas } from "react-bootstrap";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { queryAtom, savedLayoutsAtom, selectedQAtom } from "../../utils/state";
+import { apiPostWithTimeOut } from "../../utils/services";
+import API from "../../utils/url";
 
 function Header() {
   const [show, setShow] = useState(false);
@@ -33,16 +35,31 @@ function Header() {
     setSelectedQ(obj.query);
     setShowCanvas(false);
   };
+  const layoutConfig = (obj) => {
+    let result = { 'name': "", 'queries': {} }
+    result['name'] = obj.name
 
-  const saveLayout = () => {
+    for (let i in obj.query) {
+      var query = obj.query[i]
+      var id = query['id']
+      result['queries'].id = {
+        'given': query['given'],
+        'when': query['when'],
+        'then': query['then'],
+      }
+    }
+    return result
+  };
+  const saveLayout = async () => {
     if (layoutName !== "") {
       let obj = {
         name: layoutName,
         query: qAtom,
       };
       setSavedLayouts(pre => [...pre, obj]);
-      setShow(false);
       setLayoutName("");
+      await apiPostWithTimeOut(API["save-layout"], 120000, layoutConfig(obj));
+      setShow(false);
     }
   };
 
@@ -114,12 +131,10 @@ function Header() {
                       textAlign: "center",
                       borderRadius: "0",
                       fontSize: "1em",
-                      backgroundColor: `${
-                        index == selectedIndex ? "#0D9276" : "#FFF6E9"
-                      }`,
-                      color: `${
-                        index == selectedIndex ? "#BBE2EC" : "#0D9276"
-                      }`,
+                      backgroundColor: `${index == selectedIndex ? "#0D9276" : "#FFF6E9"
+                        }`,
+                      color: `${index == selectedIndex ? "#BBE2EC" : "#0D9276"
+                        }`,
                     }}
                     onClick={() => {
                       selectLayout(item, index);
