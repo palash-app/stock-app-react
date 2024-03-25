@@ -3,34 +3,43 @@ import "./Sidenav.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import QueryTool from "../QueryTool/QueryTool";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import { queryAtom, selectedQAtom } from "../../utils/state";
+import API from "../../utils/url";
+import axios from "axios";
 
 function Sidenav() {
-  const [subModules, setSubModules] = useState([]);
-  const setQAtom = useSetRecoilState(queryAtom);
-  const selectedLayout = useRecoilValue(selectedQAtom);
+  const [queryIds, setQueryIds] = useState([]);
+  const [allSteps, setAllSteps] = useState([]);
 
-  const addSubModule = () => {
-    const newObj = { id: `${Date.now() + Math.floor(Math.random() * 10000)}` };
-    const newSubModule = [...subModules, newObj];
-    setQAtom(pre => [...pre, newObj]);
-    setSubModules(newSubModule);
-  };
-
-  const removeSubModule = id => {
-    const updatedSubModules = subModules.filter(
-      subModule => subModule.id !== id
-    );
-    setQAtom(updatedSubModules);
-    setSubModules(updatedSubModules);
-  };
-
+  // Fetch statement list from server
   useEffect(() => {
-    if (selectedLayout.length > 0) {
-      setSubModules(selectedLayout);
+    async function fetchAllSteps() {
+      try {
+        const obj = {
+          query: "statementlist --do get",
+        };
+        const response = await axios.post(API["root"], obj);
+        if (response.status === 200) {
+          setAllSteps(response.data);
+        }
+      } catch (err) {
+        console.log(err);
+      }
     }
-  }, [selectedLayout]);
+    fetchAllSteps();
+  }, []);
+
+  // Add query
+  const addQuery = () => {
+    const queryId = `${Date.now()}`;
+    setQueryIds((prevQueryIds) => [...prevQueryIds, queryId]);
+  };
+
+  // Remove query
+  const removeQuery = (id) => {
+    var updatedQueries = queryIds.slice();
+    updatedQueries = updatedQueries.filter((itrId) => itrId !== id);
+    setQueryIds(updatedQueries);
+  };
 
   return (
     <aside className="sidenav">
@@ -39,22 +48,19 @@ function Sidenav() {
       </div>
       <hr />
       <div className="side-head d-flex justify-content-between align-items-center">
-        <button className="button-13" onClick={addSubModule}>
+        <button className="button-13" onClick={addQuery}>
           <FontAwesomeIcon icon={faPlus} />
           Add Query
         </button>
-        {subModules.length > 0 && (
-          <button className="count-btn">{subModules.length}</button>
-        )}
       </div>
-
       <div className="module">
-        {subModules.map((subModule, index) => (
+        {queryIds.map((id, index) => (
           <QueryTool
-            key={subModule.id}
-            removeSubModule={removeSubModule}
-            subModule={subModule}
+            key={id}
+            id={id}
+            removeCallback={removeQuery}
             index={index}
+            allSteps={allSteps} // passing all steps to child
           />
         ))}
       </div>
