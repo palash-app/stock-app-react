@@ -11,18 +11,12 @@ const AutocompleteInput = ({ addQuery, queries }) => {
   const testInput = useRef();
   const suggestionsRef = useRef();
 
-  const handleFocus = e => {
-    console.log(e.target.onFocus);
+  const handleFocus = (e) => {
     setIsFocused(true);
   };
 
-  // const handleBlur = e => {
-  //   e.stopPropagation();
-  //   setIsFocused(false);
-  // };
-
   useEffect(() => {
-    const arr = queries.map(item => item.statements).flat();
+    const arr = queries.map((item) => item.statements).flat();
     setOptions(arr);
   }, [queries]);
 
@@ -39,10 +33,10 @@ const AutocompleteInput = ({ addQuery, queries }) => {
     }
   }, [selectedOptionIndex]);
 
-  const handleInputChange = e => {
+  const handleInputChange = (e) => {
     let value = e.target.value;
     if (value !== "") {
-      const arr = options.filter(item => item.startsWith(value));
+      const arr = options.filter((item) => item.startsWith(value));
       setFilteredOptions(arr);
     } else {
       setFilteredOptions([]);
@@ -51,28 +45,28 @@ const AutocompleteInput = ({ addQuery, queries }) => {
     setSelectedOptionIndex(-1);
   };
 
-  const handleOptionClick = option => {
-    const selectedArr = queries.filter(item =>
-      item.statements.some(statement => statement === option)
+  const handleOptionClick = (option) => {
+    const selectedArr = queries.filter((item) =>
+      item.statements.some((statement) => statement === option)
     );
     addQuery(selectedArr[0], option);
     setInputValue("");
     setFilteredOptions([]);
   };
 
-  const handleKeyDown = e => {
+  const handleKeyDown = (e) => {
     if (filteredOptions.length === 0) return;
 
     switch (e.key) {
       case "ArrowUp":
         e.preventDefault();
-        setSelectedOptionIndex(prevIndex =>
+        setSelectedOptionIndex((prevIndex) =>
           prevIndex > 0 ? prevIndex - 1 : filteredOptions.length - 1
         );
         break;
       case "ArrowDown":
         e.preventDefault();
-        setSelectedOptionIndex(prevIndex =>
+        setSelectedOptionIndex((prevIndex) =>
           prevIndex < filteredOptions.length - 1 ? prevIndex + 1 : 0
         );
         break;
@@ -95,7 +89,7 @@ const AutocompleteInput = ({ addQuery, queries }) => {
         value={inputValue}
         onChange={handleInputChange}
         onKeyDown={handleKeyDown}
-        onFocus={e => {
+        onFocus={(e) => {
           handleFocus(e);
         }}
         placeholder="Type to search..."
