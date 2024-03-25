@@ -16,7 +16,7 @@ function GherkinQuery({ stepTypeToAdd, stepTypeToRemove, allSteps }) {
   // Update / Add when a step node is added
   useEffect(() => {
     var newNode = null;
-    switch (stepTypeToAdd.type) {
+    switch (stepTypeToAdd) {
       case "When":
         newNode = whenTemplate;
         break;

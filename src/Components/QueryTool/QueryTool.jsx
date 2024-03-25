@@ -60,7 +60,9 @@ function QueryTool({ id, removeCallback, index, allSteps }) {
   const submitQuery = async () => {
     let feature = "Feature: v2"; // gherkin query version 2
     let scenario = `Scenario:${title}`;
-    let gherkin = `${feature}\n${scenario}\n${htmlDomToString()}`;
+    let gherkin = `${feature}\n${scenario}\n${htmlDomToString(
+      gherkinRef.current.getElementsByClassName("tree-view")
+    )}`;
 
     let gherkinQuery = {
       query: `webserver --gherkin ${gherkin} --indicator gherkin`,
@@ -75,52 +77,6 @@ function QueryTool({ id, removeCallback, index, allSteps }) {
     toast.success("Submit Successfull ");
   };
 
-  // Helper method to fetch gherkin query string from HTML DOM
-  const htmlDomToString = () => {
-    let gherkinStepsList = [];
-    for (let gherkinSteps of gherkinRef.current.getElementsByClassName(
-      "tree-view"
-    )) {
-      var stepList = [];
-      for (let steps of gherkinSteps.getElementsByClassName("children")) {
-        var dataList = [];
-        if (steps !== undefined) {
-          for (let dv of steps.children) {
-            switch (dv.firstChild.tagName) {
-              case "SELECT":
-              case "INPUT":
-                dataList.push(dv.firstChild.value);
-                break;
-              case "P":
-                dataList.push(dv.firstChild.textContent);
-                break;
-              default:
-                throw new Error("This should not happen");
-            }
-          }
-        }
-        stepList.push(dataList.join(" "));
-      }
-
-      gherkinStepsList.push([
-        gherkinSteps.children[0].children[0].textContent,
-        stepList,
-      ]);
-    }
-
-    let gherkinString = "";
-    for (let [type, query] of gherkinStepsList) {
-      let stepString = type + " " + query[0] + "\n";
-      for (let i = 1; i < query.length; i++) {
-        stepString = stepString + "* " + query[i] + "\n";
-      }
-
-      gherkinString = gherkinString + stepString;
-    }
-
-    return gherkinString;
-  };
-
   return (
     <Card id="query-card" key={id}>
       <Card.Body className={`m-1 p-1 ${expanded ? "" : "expanded"}`}>
@@ -131,7 +87,7 @@ function QueryTool({ id, removeCallback, index, allSteps }) {
           <div style={{ width: "50%" }}>
             <input
               id="card_title"
-              className="fw-bold p-1"
+              className="query-title"
               value={title}
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
@@ -240,4 +196,47 @@ function QueryTool({ id, removeCallback, index, allSteps }) {
   );
 }
 
+// Helper method to fetch gherkin query string from HTML DOM
+export function htmlDomToString(stepsCollection) {
+  let gherkinStepsList = [];
+  for (let gherkinSteps of stepsCollection) {
+    var stepList = [];
+    for (let steps of gherkinSteps.getElementsByClassName("children")) {
+      var dataList = [];
+      if (steps !== undefined) {
+        for (let dv of steps.children) {
+          switch (dv.firstChild.tagName) {
+            case "SELECT":
+            case "INPUT":
+              dataList.push(dv.firstChild.value);
+              break;
+            case "P":
+              dataList.push(dv.firstChild.textContent);
+              break;
+            default:
+              throw new Error("This should not happen");
+          }
+        }
+      }
+      stepList.push(dataList.join(" "));
+    }
+
+    gherkinStepsList.push([
+      gherkinSteps.children[0].children[0].textContent,
+      stepList,
+    ]);
+  }
+
+  let gherkinString = "";
+  for (let [type, query] of gherkinStepsList) {
+    let stepString = type + " " + query[0] + "\n";
+    for (let i = 1; i < query.length; i++) {
+      stepString = stepString + "* " + query[i] + "\n";
+    }
+
+    gherkinString = gherkinString + stepString;
+  }
+
+  return gherkinString;
+}
 export default QueryTool;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faAngleLeft,
@@ -14,8 +14,10 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { queryAtom, savedLayoutsAtom, selectedQAtom } from "../../utils/state";
 import { apiPostWithTimeOut } from "../../utils/services";
 import API from "../../utils/url";
+import { htmlDomToString } from "../QueryTool/QueryTool";
 
 function Header() {
+  const queryRef = useRef(null);
   const [show, setShow] = useState(false);
   const [showCanvas, setShowCanvas] = useState(false);
   const qAtom = useRecoilValue(queryAtom);
@@ -35,30 +37,45 @@ function Header() {
     setSelectedQ(obj.query);
     setShowCanvas(false);
   };
+
   const layoutConfig = (obj) => {
-    let result = { 'name': "", 'queries': {} }
-    result['name'] = obj.name
+    let result = { name: "", queries: {} };
+    result["name"] = obj.name;
 
     for (let i in obj.query) {
-      var query = obj.query[i]
-      var id = query['id']
-      result['queries'].id = {
-        'given': query['given'],
-        'when': query['when'],
-        'then': query['then'],
-      }
+      var query = obj.query[i];
+      result["queries"][query["id"]] = {
+        steps: {
+          given: query["given"],
+          when: query["when"],
+          then: query["then"],
+        },
+      };
     }
-    return result
+    return result;
   };
+
   const saveLayout = async () => {
     if (layoutName !== "") {
-      let obj = {
-        name: layoutName,
-        query: qAtom,
-      };
-      setSavedLayouts(pre => [...pre, obj]);
+      var queryConfig = {};
+      var queryCount = 0;
+      for (let query of document.querySelector(".module").children) {
+        let feature = "Feature: v2"; // gherkin query version 2
+        // Add ms to scenario value for cases when user uses the same query name
+        let scenario = `Scenario:${
+          query.getElementsByClassName("query-title")[0].value
+        }`;
+        let gherkin = `${feature}\n${scenario}\n${htmlDomToString(
+          query.getElementsByClassName("tree-view")
+        )}`;
+        queryConfig[scenario + `:${queryCount}`] = gherkin;
+        queryCount = queryCount + 1;
+      }
+
       setLayoutName("");
-      await apiPostWithTimeOut(API["save-layout"], 120000, layoutConfig(obj));
+      var data = {};
+      data[layoutName] = queryConfig;
+      await apiPostWithTimeOut(API["save-layout"], 120000, data);
       setShow(false);
     }
   };
@@ -92,7 +109,7 @@ function Header() {
                 type="text"
                 placeholder="Enter Name"
                 value={layoutName}
-                onChange={e => {
+                onChange={(e) => {
                   setLayoutName(e.target.value);
                 }}
               />
@@ -131,10 +148,12 @@ function Header() {
                       textAlign: "center",
                       borderRadius: "0",
                       fontSize: "1em",
-                      backgroundColor: `${index == selectedIndex ? "#0D9276" : "#FFF6E9"
-                        }`,
-                      color: `${index == selectedIndex ? "#BBE2EC" : "#0D9276"
-                        }`,
+                      backgroundColor: `${
+                        index == selectedIndex ? "#0D9276" : "#FFF6E9"
+                      }`,
+                      color: `${
+                        index == selectedIndex ? "#BBE2EC" : "#0D9276"
+                      }`,
                     }}
                     onClick={() => {
                       selectLayout(item, index);
