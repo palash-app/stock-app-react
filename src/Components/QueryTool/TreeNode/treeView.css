@@ -21,7 +21,8 @@
 
 .children {
   display: flex;
-  gap: 1px;
+  column-gap: 5px;
+  row-gap: 1px;
   flex-wrap: wrap;
   margin-bottom: 20px;
 }
