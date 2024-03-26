@@ -205,16 +205,17 @@ export function htmlDomToString(stepsCollection) {
       var dataList = [];
       if (steps !== undefined) {
         for (let dv of steps.children) {
-          switch (dv.firstChild.tagName) {
-            case "SELECT":
-            case "INPUT":
-              dataList.push(dv.firstChild.value);
-              break;
-            case "P":
-              dataList.push(dv.firstChild.textContent);
-              break;
-            default:
-              throw new Error("This should not happen");
+          if (dv.tagName === "SPAN") {
+            switch (dv.firstChild.tagName) {
+              case "SELECT":
+              case "INPUT":
+                dataList.push(dv.firstChild.value);
+                break;
+              default:
+                throw new Error("This should not happen");
+            }
+          } else if (dv.tagName === "P") {
+            dataList.push(dv.firstChild.textContent);
           }
         }
       }
