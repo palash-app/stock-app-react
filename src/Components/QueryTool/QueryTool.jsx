@@ -77,6 +77,10 @@ function QueryTool({ id, removeCallback, index, allSteps }) {
     toast.success("Submit Successfull ");
   };
 
+  const handleTitleChange = (event) => {
+    setTitle(event.target.value);
+  };
+
   return (
     <Card id="query-card" key={id}>
       <Card.Body className={`m-1 p-1 ${expanded ? "" : "expanded"}`}>
@@ -84,16 +88,12 @@ function QueryTool({ id, removeCallback, index, allSteps }) {
           className="d-flex justify-content-between gx-1 mx-1 align-items-center"
           style={{ height: "35px" }}
         >
-          <div style={{ width: "50%" }}>
+          <div style={{ width: "30%" }}>
             <input
               id="card_title"
               className="query-title"
               value={title}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  setTitle(e.target.value);
-                }
-              }}
+              onChange={handleTitleChange}
             ></input>
           </div>
           <div className="card-buttons">
