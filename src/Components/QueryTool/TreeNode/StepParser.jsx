@@ -4,6 +4,52 @@ const StepParser = ({ query }) => {
   const [elements, setElements] = useState([]);
   const elementHeight = "20px";
   const elementMinWidth = 4;
+  const inputTemplate = (index, type, value, handleChange) => {
+    return (
+      <span style={{ color: "blue" }}>
+        <input
+          key={index}
+          type={`${type}`}
+          value={value}
+          onChange={(e) => {
+            handleChange(e, index);
+          }}
+          style={{
+            height: `${elementHeight}`,
+            width: `${value.length + elementMinWidth}ch`,
+          }}
+        />
+      </span>
+    );
+  };
+  const selectionTemplate = (index, value, options, handleChange) => {
+    return (
+      <span style={{ color: "blue" }}>
+        <select
+          key={index}
+          value={value}
+          onChange={(e) => {
+            handleChange(e, index);
+          }}
+          className="select"
+          style={{ height: `${elementHeight}` }}
+        >
+          {options.map((item) =>
+            item === value ? (
+              <option key={item} value={item} selected>
+                {item}
+              </option>
+            ) : (
+              <option key={item} value={item}>
+                {item}
+              </option>
+            )
+          )}
+        </select>
+      </span>
+    );
+  };
+
   var currElements = [];
 
   const handleChange = (event, index) => {
@@ -12,48 +58,15 @@ const StepParser = ({ query }) => {
     var tempToAdd = "";
     var updateValue = event.target.value;
     if (eventElement.props.children.type === "input") {
-      tempToAdd = (
-        <span style={{ color: "blue" }}>
-          <input
-            key={index}
-            type={`${event.target.type}`}
-            value={updateValue}
-            onChange={(e) => {
-              handleChange(e, index);
-            }}
-            style={{
-              height: `${elementHeight}`,
-              width: `${updateValue.length + elementMinWidth}ch`,
-            }}
-          />
-        </span>
+      tempToAdd = inputTemplate(
+        index,
+        event.target.type,
+        updateValue,
+        handleChange
       );
     } else if (eventElement.props.children.type === "select") {
-      tempToAdd = (
-        <span style={{ color: "blue" }}>
-          <select
-            key={index}
-            value={updateValue}
-            onChange={(e) => {
-              handleChange(e, index);
-            }}
-            className="select"
-            style={{ height: `${elementHeight}` }}
-          >
-            {Array.from(event.target.options).map((item) =>
-              item.text === event.target.value ? (
-                <option key={item.text} value={item.text} selected>
-                  {item.text}
-                </option>
-              ) : (
-                <option key={item.text} value={item.text}>
-                  {item.text}
-                </option>
-              )
-            )}
-          </select>
-        </span>
-      );
+      let options = Array.from(event.target.options).map((item) => item.text);
+      tempToAdd = selectionTemplate(index, updateValue, options, handleChange);
     }
     elementsAvailable[index] = tempToAdd;
     currElements = elementsAvailable;
@@ -72,42 +85,11 @@ const StepParser = ({ query }) => {
         if (options[i].includes(value)) {
           let opts = options[i];
           if (opts[0] === "<list>" || opts[0] === "<word>") {
-            tempToAdd = (
-              <span style={{ color: "blue" }}>
-                <input
-                  key={i}
-                  type="text"
-                  value={value}
-                  onChange={(e) => {
-                    handleChange(e, i);
-                  }}
-                  style={{
-                    height: `${elementHeight}`,
-                    width: `${value.length + elementMinWidth}ch`,
-                  }}
-                  placeholder={`${opts}`}
-                />
-              </span>
-            );
+            tempToAdd = inputTemplate(i, "text", value, handleChange);
           } else if (opts[0] === "<number>") {
-            tempToAdd = (
-              <span style={{ color: "blue" }}>
-                <input
-                  key={i}
-                  type="number"
-                  value={value}
-                  onChange={(e) => {
-                    handleChange(e, i);
-                  }}
-                  style={{
-                    height: `${elementHeight}`,
-                    width: `${value.length + elementMinWidth}ch`,
-                  }}
-                  placeholder={`${opts}`}
-                />
-              </span>
-            );
+            tempToAdd = inputTemplate(i, "number", value, handleChange);
           } else if (opts.length > 1) {
+            tempToAdd = selectionTemplate(i, value, opts, handleChange);
             tempToAdd = (
               <span style={{ color: "blue" }}>
                 <select
