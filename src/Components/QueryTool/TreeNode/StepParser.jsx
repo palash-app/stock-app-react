@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 
 const StepParser = ({ query }) => {
   const [elements, setElements] = useState([]);
+  const elementHeight = "20px";
+  const elementMinWidth = 4;
   var currElements = [];
 
   const handleChange = (event, index) => {
@@ -9,40 +11,48 @@ const StepParser = ({ query }) => {
     var eventElement = elementsAvailable[index];
     var tempToAdd = "";
     var updateValue = event.target.value;
-    if (eventElement.type === "input") {
+    if (eventElement.props.children.type === "input") {
       tempToAdd = (
-        <input
-          key={index}
-          type={`${event.target.type}`}
-          value={updateValue}
-          onChange={(e) => {
-            handleChange(e, index);
-          }}
-          style={{ width: `${updateValue.length + 4}ch` }}
-        />
+        <span style={{ color: "blue" }}>
+          <input
+            key={index}
+            type={`${event.target.type}`}
+            value={updateValue}
+            onChange={(e) => {
+              handleChange(e, index);
+            }}
+            style={{
+              height: `${elementHeight}`,
+              width: `${updateValue.length + elementMinWidth}ch`,
+            }}
+          />
+        </span>
       );
-    } else if (eventElement.type === "select") {
+    } else if (eventElement.props.children.type === "select") {
       tempToAdd = (
-        <select
-          key={index}
-          value={updateValue}
-          onChange={(e) => {
-            handleChange(e, index);
-          }}
-          className="select"
-        >
-          {Array.from(event.target.options).map((item) =>
-            item.text === event.target.value ? (
-              <option key={item.text} value={item.text} selected>
-                {item.text}
-              </option>
-            ) : (
-              <option key={item.text} value={item.text}>
-                {item.text}
-              </option>
-            )
-          )}
-        </select>
+        <span style={{ color: "blue" }}>
+          <select
+            key={index}
+            value={updateValue}
+            onChange={(e) => {
+              handleChange(e, index);
+            }}
+            className="select"
+            style={{ height: `${elementHeight}` }}
+          >
+            {Array.from(event.target.options).map((item) =>
+              item.text === event.target.value ? (
+                <option key={item.text} value={item.text} selected>
+                  {item.text}
+                </option>
+              ) : (
+                <option key={item.text} value={item.text}>
+                  {item.text}
+                </option>
+              )
+            )}
+          </select>
+        </span>
       );
     }
     elementsAvailable[index] = tempToAdd;
@@ -63,51 +73,64 @@ const StepParser = ({ query }) => {
           let opts = options[i];
           if (opts[0] === "<list>" || opts[0] === "<word>") {
             tempToAdd = (
-              <input
-                key={i}
-                type="text"
-                value={value}
-                onChange={(e) => {
-                  handleChange(e, i);
-                }}
-                style={{ width: `${value.length + 1}ch` }}
-                placeholder={`${opts}`}
-              />
+              <span style={{ color: "blue" }}>
+                <input
+                  key={i}
+                  type="text"
+                  value={value}
+                  onChange={(e) => {
+                    handleChange(e, i);
+                  }}
+                  style={{
+                    height: `${elementHeight}`,
+                    width: `${value.length + elementMinWidth}ch`,
+                  }}
+                  placeholder={`${opts}`}
+                />
+              </span>
             );
           } else if (opts[0] === "<number>") {
             tempToAdd = (
-              <input
-                key={i}
-                type="number"
-                value={value}
-                onChange={(e) => {
-                  handleChange(e, i);
-                }}
-                style={{ width: `${value.length + 1}ch` }}
-                placeholder={`${opts}`}
-              />
+              <span style={{ color: "blue" }}>
+                <input
+                  key={i}
+                  type="number"
+                  value={value}
+                  onChange={(e) => {
+                    handleChange(e, i);
+                  }}
+                  style={{
+                    height: `${elementHeight}`,
+                    width: `${value.length + elementMinWidth}ch`,
+                  }}
+                  placeholder={`${opts}`}
+                />
+              </span>
             );
           } else if (opts.length > 1) {
             tempToAdd = (
-              <select
-                key={i}
-                value={value}
-                onChange={(e) => {
-                  handleChange(e, i);
-                }}
-              >
-                {opts.map((item) =>
-                  item === value ? (
-                    <option key={item} value={item} selected>
-                      {item}
-                    </option>
-                  ) : (
-                    <option key={item} value={item}>
-                      {item}
-                    </option>
-                  )
-                )}
-              </select>
+              <span style={{ color: "blue" }}>
+                <select
+                  key={i}
+                  value={value}
+                  onChange={(e) => {
+                    handleChange(e, i);
+                  }}
+                  style={{ height: `${elementHeight}` }}
+                >
+                  {opts.map((item) =>
+                    item === value ? (
+                      <option key={item} value={item} selected>
+                        {item}
+                      </option>
+                    ) : (
+                      <option key={item} value={item}>
+                        {item}
+                      </option>
+                    )
+                  )}
+                </select>
+              </span>
             );
           } else {
             throw new Error("This should not happen");
@@ -125,7 +148,7 @@ const StepParser = ({ query }) => {
   return (
     <div className="children">
       {elements.map((element, index) => (
-        <div key={index}>{element}</div>
+        <>{element}</>
       ))}
     </div>
   );
