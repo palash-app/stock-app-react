@@ -3,29 +3,23 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faAngleLeft,
   faAngleRight,
-  faBars,
   faFloppyDisk,
   faPlus,
 } from "@fortawesome/free-solid-svg-icons";
 import "./Header.css";
 import { useNavigate } from "react-router-dom";
 import { ListGroup, Modal, Offcanvas } from "react-bootstrap";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { queryAtom, savedLayoutsAtom, selectedQAtom } from "../../utils/state";
 import { apiPostWithTimeOut } from "../../utils/services";
 import API from "../../utils/url";
 import { htmlDomToString } from "../QueryTool/QueryTool";
 
 function Header() {
-  const queryRef = useRef(null);
   const [show, setShow] = useState(false);
   const [showCanvas, setShowCanvas] = useState(false);
-  const qAtom = useRecoilValue(queryAtom);
-  const [selectedQ, setSelectedQ] = useRecoilState(selectedQAtom);
-  const [savedLaouts, setSavedLayouts] = useRecoilState(savedLayoutsAtom);
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [layoutName, setLayoutName] = useState("");
   const navigate = useNavigate();
+  const savedLayouts = []; // TODO call server to fetch config and layout
 
   const AddLayout = () => {
     setShowCanvas(false);
@@ -34,25 +28,7 @@ function Header() {
 
   const selectLayout = (obj, index) => {
     setSelectedIndex(index);
-    setSelectedQ(obj.query);
     setShowCanvas(false);
-  };
-
-  const layoutConfig = (obj) => {
-    let result = { name: "", queries: {} };
-    result["name"] = obj.name;
-
-    for (let i in obj.query) {
-      var query = obj.query[i];
-      result["queries"][query["id"]] = {
-        steps: {
-          given: query["given"],
-          when: query["when"],
-          then: query["then"],
-        },
-      };
-    }
-    return result;
   };
 
   const saveLayout = async () => {
@@ -140,8 +116,8 @@ function Header() {
           </Offcanvas.Header>
           <Offcanvas.Body className="p-0">
             <ListGroup>
-              {savedLaouts.length > 0 &&
-                savedLaouts.map((item, index) => (
+              {savedLayouts.length > 0 &&
+                savedLayouts.map((item, index) => (
                   <ListGroup.Item
                     style={{
                       cursor: "pointer",
@@ -149,10 +125,10 @@ function Header() {
                       borderRadius: "0",
                       fontSize: "1em",
                       backgroundColor: `${
-                        index == selectedIndex ? "#0D9276" : "#FFF6E9"
+                        index === selectedIndex ? "#0D9276" : "#FFF6E9"
                       }`,
                       color: `${
-                        index == selectedIndex ? "#BBE2EC" : "#0D9276"
+                        index === selectedIndex ? "#BBE2EC" : "#0D9276"
                       }`,
                     }}
                     onClick={() => {

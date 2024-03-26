@@ -4,8 +4,6 @@ import Sidenav from "../../Components/Sidenav/Sidenav";
 import Header from "../../Components/Header/Header";
 import axios from "axios";
 import TradeChart from "../../Components/ChartNew/TradeChart";
-import { useRecoilValue } from "recoil";
-import { queryAtom } from "../../utils/state";
 import API from "../../utils/url";
 import "react-toastify/dist/ReactToastify.css";
 
