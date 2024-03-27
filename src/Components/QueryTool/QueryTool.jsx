@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import {
   faAngleDown,
   faFootball,
@@ -12,9 +12,9 @@ import { Card } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./query.css";
 import { apiPostWithTimeOut, getValueOrDefault } from "../../utils/services";
-import GherkinQuery from "./TreeNode/GherkinQuery";
 import { toast } from "react-toastify";
 import API from "../../utils/url";
+import Steps from "./TreeNode/Steps";
 
 function QueryTool({ id, removeCallback, index, allSteps }) {
   const gherkinRef = useRef(null);
@@ -23,17 +23,34 @@ function QueryTool({ id, removeCallback, index, allSteps }) {
   const [result, setResult] = useState([]);
   const [loading, setLoading] = useState(false);
   const [title, setTitle] = useState("Relative Strength");
-  const [stepTypeToAdd, setStepTypeToAdd] = useState({ type: "", id: "" });
-  // var stepTypeToRemove = { "type": "", "id": "" }
+
+  const givenTemplate = <Steps title="Given" steps={allSteps["Given"]}></Steps>;
+  const whenTemplate = <Steps title="When" steps={allSteps["When"]}></Steps>;
+  const thenTemplate = <Steps title="Then" steps={allSteps["Then"]}></Steps>;
+  const [nodeList, setNodeList] = useState([
+    givenTemplate,
+    whenTemplate,
+    thenTemplate,
+  ]);
 
   // Add to query, by default given, when and then are added. The step is blank
   // and hence no data now. The steps will be updated by the user. Also, additional
   // when and then steps can be added by user.
   const addStepType = (type) => {
-    setStepTypeToAdd({
-      id: `${Date.now()}`,
-      type: type,
-    });
+    var newNode = null;
+    switch (type) {
+      case "When":
+        newNode = whenTemplate;
+        break;
+      case "Then":
+        newNode = thenTemplate;
+        break;
+      case "Given":
+        break;
+      default:
+        break;
+    }
+    setNodeList((prevNodeList) => [...prevNodeList, newNode]);
   };
 
   // Get result of the query
@@ -146,14 +163,7 @@ function QueryTool({ id, removeCallback, index, allSteps }) {
         </div>
         <hr className="mt-0" />
         <div ref={gherkinRef}>
-          {
-            <GherkinQuery
-              key={stepTypeToAdd.id}
-              stepTypeToAdd={stepTypeToAdd.type}
-              stepTypeToRemove={null}
-              allSteps={allSteps}
-            ></GherkinQuery>
-          }
+          {<>{nodeList.map((gherkinNode, index) => gherkinNode)}</>}
         </div>
         <div className="d-flex justify-content-end m-2"></div>
       </Card.Body>
