@@ -33,6 +33,10 @@ const AutocompleteInput = ({ addQuery, queries }) => {
     }
   }, [selectedOptionIndex]);
 
+  const handleClick = (e) => {
+    setFilteredOptions(options);
+  };
+
   const handleInputChange = (e) => {
     let value = e.target.value;
     if (value !== "") {
@@ -92,7 +96,8 @@ const AutocompleteInput = ({ addQuery, queries }) => {
         onFocus={(e) => {
           handleFocus(e);
         }}
-        placeholder="Type to search..."
+        onClick={handleClick}
+        placeholder="Select step template ..."
         className="form-control rounded-0"
       />
       {isFocused && filteredOptions.length > 0 && (
