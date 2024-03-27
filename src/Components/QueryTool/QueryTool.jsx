@@ -163,7 +163,13 @@ function QueryTool({ id, removeCallback, index, allSteps }) {
         </div>
         <hr className="mt-0" />
         <div ref={gherkinRef}>
-          {<>{nodeList.map((gherkinNode, index) => gherkinNode)}</>}
+          {
+            <>
+              {nodeList.map((gherkinNode, index) => (
+                <React.Fragment key={index}>{gherkinNode}</React.Fragment>
+              ))}
+            </>
+          }
         </div>
         <div className="d-flex justify-content-end m-2"></div>
       </Card.Body>

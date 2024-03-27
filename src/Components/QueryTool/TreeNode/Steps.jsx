@@ -1,5 +1,5 @@
 // TreeView.js
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import "./treeView.css"; // Import the CSS file
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -12,7 +12,6 @@ import AutocompleteInput from "../AutoComplete/AutoComplete";
 import StepParser from "./StepParser";
 
 const Steps = ({ title, steps }) => {
-  const stepsRef = useRef(null);
   const [isExpanded, setExpanded] = useState(false);
   const [statements, setStatements] = useState([]);
 
@@ -56,13 +55,13 @@ const Steps = ({ title, steps }) => {
             <AutocompleteInput addQuery={addQuery} queries={steps} />
           </div>
         )}
-        <ul ref={stepsRef}>
+        <ul className="step-list">
           {isExpanded &&
             statements &&
             statements.map((item, index) => (
-              <li key={index}>
+              <li key={item.id}>
                 <div className="d-flex justify-content-between">
-                  <StepParser key={item.id} query={item} />
+                  <StepParser query={item} />
                   <div>
                     <button
                       className="close-btn"

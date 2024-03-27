@@ -34,17 +34,11 @@ const StepParser = ({ query }) => {
           className="select"
           style={{ height: `${elementHeight}` }}
         >
-          {options.map((item) =>
-            item === value ? (
-              <option key={item} value={item} selected>
-                {item}
-              </option>
-            ) : (
-              <option key={item} value={item}>
-                {item}
-              </option>
-            )
-          )}
+          {options.map((item) => (
+            <React.Fragment key={item}>
+              <option value={item}>{item}</option>
+            </React.Fragment>
+          ))}
         </select>
       </span>
     );
@@ -100,17 +94,11 @@ const StepParser = ({ query }) => {
                   }}
                   style={{ height: `${elementHeight}` }}
                 >
-                  {opts.map((item) =>
-                    item === value ? (
-                      <option key={item} value={item} selected>
-                        {item}
-                      </option>
-                    ) : (
-                      <option key={item} value={item}>
-                        {item}
-                      </option>
-                    )
-                  )}
+                  {opts.map((item) => (
+                    <React.Fragment key={item}>
+                      <option value={item}>{item}</option>
+                    </React.Fragment>
+                  ))}
                 </select>
               </span>
             );
@@ -130,7 +118,9 @@ const StepParser = ({ query }) => {
   return (
     <div className="children">
       {elements.map((element, index) => (
-        <>{element}</>
+        <>
+          <React.Fragment key={index}>{element}</React.Fragment>
+        </>
       ))}
     </div>
   );
