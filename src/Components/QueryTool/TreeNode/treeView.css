@@ -85,3 +85,7 @@ input:focus {
 .close-btn:active {
   font-size: 1.2rem;
 }
+
+.step-list li{
+  height: auto;
+}

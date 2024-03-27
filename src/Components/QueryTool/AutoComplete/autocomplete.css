@@ -5,6 +5,10 @@
   margin-left: 15px;
 }
 
+.autocomplete-container>input {
+  height: 30px;
+}
+
 .autocomplete-suggestions {
   position: absolute;
   z-index: 1;
